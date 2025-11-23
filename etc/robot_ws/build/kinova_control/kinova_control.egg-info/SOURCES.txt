@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+kinova_control/__init__.py
+kinova_control/test_node.py
+kinova_control/utilities.py
+kinova_control.egg-info/PKG-INFO
+kinova_control.egg-info/SOURCES.txt
+kinova_control.egg-info/dependency_links.txt
+kinova_control.egg-info/entry_points.txt
+kinova_control.egg-info/requires.txt
+kinova_control.egg-info/top_level.txt
+kinova_control.egg-info/zip-safe
+resource/kinova_control

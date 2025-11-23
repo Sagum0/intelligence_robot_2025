@@ -1,0 +1,6 @@
+msg/KinovaCommand.idl
+msg/KinovaCommand.msg
+srv/KinovaExecutor.idl
+srv/KinovaExecutor.srv
+srv/KinovaExecutor_Request.msg
+srv/KinovaExecutor_Response.msg

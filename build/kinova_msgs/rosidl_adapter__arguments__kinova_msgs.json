@@ -1,0 +1,7 @@
+{
+  "package_name": "kinova_msgs",
+  "non_idl_tuples": [
+    "/home/pc/intelrb_ws/src/kinova_msgs:msg/KinovaCommand.msg",
+    "/home/pc/intelrb_ws/src/kinova_msgs:srv/KinovaExecutor.srv"
+  ]
+}

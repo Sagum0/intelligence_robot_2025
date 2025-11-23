@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from kinova_msgs/srv/KinovaExecutor.srv
+// generated code does not contain a copyright notice
+
+
+module kinova_msgs {
+  module srv {
+    struct KinovaExecutor_Request {
+      string frame;
+
+      sequence<float> coordinate;
+    };
+    struct KinovaExecutor_Response {
+      boolean success;
+
+      string message;
+    };
+  };
+};

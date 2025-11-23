@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "kinova_msgs__py",
+		"source" : "/home/pc/intelrb_ws/build/kinova_msgs/kinova_msgs__py"
+	}
+}

@@ -1,0 +1,5 @@
+string frame
+float32[] coordinate
+---
+bool success
+string message

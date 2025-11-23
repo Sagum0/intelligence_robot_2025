@@ -1,0 +1,16 @@
+[0.366s] Invoking command in '/home/pc/robot_ws/build/kinova_control': PYTHONPATH=/home/pc/robot_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/robot_ws/install/kinova_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pc/robot_ws/build/kinova_control/build --no-deps symlink_data
+[0.532s] running develop
+[0.625s] running egg_info
+[0.626s] writing kinova_control.egg-info/PKG-INFO
+[0.626s] writing dependency_links to kinova_control.egg-info/dependency_links.txt
+[0.626s] writing entry points to kinova_control.egg-info/entry_points.txt
+[0.626s] writing requirements to kinova_control.egg-info/requires.txt
+[0.626s] writing top-level names to kinova_control.egg-info/top_level.txt
+[0.626s] reading manifest file 'kinova_control.egg-info/SOURCES.txt'
+[0.627s] writing manifest file 'kinova_control.egg-info/SOURCES.txt'
+[0.628s] running build_ext
+[0.628s] Creating /home/pc/robot_ws/install/kinova_control/lib/python3.10/site-packages/kinova-control.egg-link (link to .)
+[0.628s] 
+[0.628s] Installed /home/pc/robot_ws/build/kinova_control
+[0.628s] running symlink_data
+[0.653s] Invoked command in '/home/pc/robot_ws/build/kinova_control' returned '0': PYTHONPATH=/home/pc/robot_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/robot_ws/install/kinova_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pc/robot_ws/build/kinova_control/build --no-deps symlink_data

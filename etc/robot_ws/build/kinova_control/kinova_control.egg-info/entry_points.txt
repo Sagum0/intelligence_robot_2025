@@ -1,0 +1,3 @@
+[console_scripts]
+test = kinova_control.test_node:main
+

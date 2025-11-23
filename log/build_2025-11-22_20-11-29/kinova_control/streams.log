@@ -1,0 +1,26 @@
+[0.306s] Invoking command in '/home/pc/intelrb_ws/src/kinova_control': PYTHONPATH=/home/pc/intelrb_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/kinova_control build --build-base /home/pc/intelrb_ws/build/kinova_control/build install --record /home/pc/intelrb_ws/build/kinova_control/install.log --single-version-externally-managed install_data
+[0.429s] running egg_info
+[0.429s] writing ../../build/kinova_control/kinova_control.egg-info/PKG-INFO
+[0.429s] writing dependency_links to ../../build/kinova_control/kinova_control.egg-info/dependency_links.txt
+[0.429s] writing entry points to ../../build/kinova_control/kinova_control.egg-info/entry_points.txt
+[0.429s] writing requirements to ../../build/kinova_control/kinova_control.egg-info/requires.txt
+[0.430s] writing top-level names to ../../build/kinova_control/kinova_control.egg-info/top_level.txt
+[0.430s] reading manifest file '../../build/kinova_control/kinova_control.egg-info/SOURCES.txt'
+[0.431s] writing manifest file '../../build/kinova_control/kinova_control.egg-info/SOURCES.txt'
+[0.431s] running build
+[0.431s] running build_py
+[0.431s] copying kinova_control/vision_node.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.431s] running install
+[0.432s] running install_lib
+[0.432s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/vision_node.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.433s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/vision_node.py to vision_node.cpython-310.pyc
+[0.433s] running install_data
+[0.433s] running install_egg_info
+[0.434s] removing '/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control-0.0.0-py3.10.egg-info' (and everything under it)
+[0.435s] Copying ../../build/kinova_control/kinova_control.egg-info to /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control-0.0.0-py3.10.egg-info
+[0.435s] running install_scripts
+[0.445s] Installing kinova_driver_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.445s] Installing test_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.445s] Installing vision_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.445s] writing list of installed files to '/home/pc/intelrb_ws/build/kinova_control/install.log'
+[0.455s] Invoked command in '/home/pc/intelrb_ws/src/kinova_control' returned '0': PYTHONPATH=/home/pc/intelrb_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/kinova_control build --build-base /home/pc/intelrb_ws/build/kinova_control/build install --record /home/pc/intelrb_ws/build/kinova_control/install.log --single-version-externally-managed install_data
