@@ -11,7 +11,7 @@ from rclpy.executors import MultiThreadedExecutor
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float32, Bool
 
-# Custom Message
+# 커스텀 메시지
 from kinova_msgs.msg import KinovaCommand
 from kinova_msgs.srv import KinovaExecutor
 
@@ -20,7 +20,7 @@ from kortex_api.autogen.client_stubs.BaseClientRpc import BaseClient
 from kortex_api.autogen.client_stubs.BaseCyclicClientRpc import BaseCyclicClient
 from kortex_api.autogen.messages import Base_pb2, BaseCyclic_pb2
 
-# Connection Helper
+# 연결 헬퍼
 from kortex_api.TCPTransport import TCPTransport
 from kortex_api.RouterClient import RouterClient, RouterClientSendOptions
 from kortex_api.SessionManager import SessionManager
@@ -30,7 +30,7 @@ class KinovaDriverNode(Node):
     def __init__(self):
         super().__init__('kinova_driver_node')
 
-        # Parameters
+        # 파라미터
         self.declare_parameter('ip_address', '192.168.1.10')
         self.declare_parameter('username', 'admin')
         self.declare_parameter('password', 'admin')
@@ -39,7 +39,7 @@ class KinovaDriverNode(Node):
         self.username = self.get_parameter('username').value
         self.password = self.get_parameter('password').value
 
-        # Kortex Connection
+        # Kortex 연결
         self.transport = None
         self.router = None
         self.session_manager = None
@@ -48,14 +48,14 @@ class KinovaDriverNode(Node):
 
         self.connect_to_robot()
 
-        # Callback Groups
+        # 콜백 그룹
         self.reentrant_group = ReentrantCallbackGroup()
 
-        # Publishers
+        # 퍼블리셔
         self.joint_pub = self.create_publisher(JointState, '/kinova/joint_states', 10)
         self.timer = self.create_timer(0.1, self.timer_callback, callback_group=self.reentrant_group)
 
-        # Subscribers
+        # 서브스크라이버
         self.subscription = self.create_subscription(
             KinovaCommand,
             '/kinova/command',
@@ -74,7 +74,7 @@ class KinovaDriverNode(Node):
         
         self.gripper_done_pub = self.create_publisher(Bool, '/kinova/bool/grp_done', 10)
 
-        # Service
+        # 서비스
         self.srv = self.create_service(
             KinovaExecutor, 
             '/kinova/execute', 
@@ -102,7 +102,7 @@ class KinovaDriverNode(Node):
             self.base = BaseClient(self.router)
             self.base_cyclic = BaseCyclicClient(self.router)
             
-            # Set servoing mode to Single Level Servoing
+            # 서보 모드를 Single Level Servoing으로 설정
             base_servo_mode = Base_pb2.ServoingModeInformation()
             base_servo_mode.servoing_mode = Base_pb2.SINGLE_LEVEL_SERVOING
             self.base.SetServoingMode(base_servo_mode)
@@ -130,12 +130,16 @@ class KinovaDriverNode(Node):
         except Exception as e:
             self.get_logger().warn(f'Failed to publish joint states: {e}')
 
-    def check_for_end_or_abort(self, e):
-        def check(notification, e=e):
+    def check_for_end_or_abort(self, e, success_flag):
+        def check(notification, e=e, success_flag=success_flag):
             event_name = Base_pb2.ActionEvent.Name(notification.action_event)
             self.get_logger().info(f"Event: {event_name}")
-            if notification.action_event == Base_pb2.ACTION_END or \
-               notification.action_event == Base_pb2.ACTION_ABORT:
+            
+            if notification.action_event == Base_pb2.ACTION_END:
+                success_flag[0] = True
+                e.set()
+            elif notification.action_event == Base_pb2.ACTION_ABORT:
+                success_flag[0] = False
                 e.set()
         return check
 
@@ -158,8 +162,8 @@ class KinovaDriverNode(Node):
         action.application_data = ""
 
         if frame == 'joint':
-            # Validate length (assuming 7 DOF for Gen3, but could be 6)
-            # We will just try to assign as many as provided
+            # 길이 검증 (Gen3는 7자유도라고 가정하지만, 6자유도일 수도 있음)
+            # 제공된 만큼 할당 시도
             for i, val in enumerate(coordinate):
                 joint_angle = action.reach_joint_angles.joint_angles.joint_angles.add()
                 joint_angle.joint_identifier = i
@@ -182,24 +186,30 @@ class KinovaDriverNode(Node):
             self.get_logger().error(f"Unknown frame: {frame}")
             return False
 
-        # Execute Action
+        # 동작 실행
         try:
             e = threading.Event()
+            success_flag = [False] # 참조로 전달하기 위한 가변 리스트
+            
             notification_handle = self.base.OnNotificationActionTopic(
-                self.check_for_end_or_abort(e),
+                self.check_for_end_or_abort(e, success_flag),
                 Base_pb2.NotificationOptions()
             )
 
             self.get_logger().info("Executing action...")
             self.base.ExecuteAction(action)
 
-            # Wait for completion
-            finished = e.wait(20.0) # 20 seconds timeout
+            # 완료 대기
+            finished = e.wait(20.0) # 20초 타임아웃
             self.base.Unsubscribe(notification_handle)
 
             if finished:
-                self.get_logger().info("Action completed successfully")
-                return True
+                if success_flag[0]:
+                    self.get_logger().info("Action completed successfully")
+                    return True
+                else:
+                    self.get_logger().warn("Action ABORTED by robot")
+                    return False
             else:
                 self.get_logger().error("Action timed out")
                 return False
@@ -210,13 +220,13 @@ class KinovaDriverNode(Node):
 
     def gripper_callback(self, msg):
         target_pos = msg.data
-        # Clamp target position to [0.0, 1.0]
+        # 목표 위치를 [0.0, 1.0] 범위로 제한
         target_pos = max(0.0, min(1.0, target_pos))
         
         self.get_logger().info(f"Received gripper command: {target_pos}")
 
         try:
-            # Create GripperCommand
+            # GripperCommand 생성
             gripper_command = Base_pb2.GripperCommand()
             finger = gripper_command.gripper.finger.add()
             
@@ -226,13 +236,13 @@ class KinovaDriverNode(Node):
             
             self.base.SendGripperCommand(gripper_command)
             
-            # Wait for completion
-            # We will poll the gripper status until it reaches the target or stops moving
+            # 완료 대기
+            # 그리퍼가 목표에 도달하거나 멈출 때까지 상태 폴링
             gripper_request = Base_pb2.GripperRequest()
             gripper_request.mode = Base_pb2.GRIPPER_POSITION
             
             start_time = time.time()
-            timeout = 5.0 # seconds
+            timeout = 5.0 # 초
             
             success = False
             
@@ -240,16 +250,16 @@ class KinovaDriverNode(Node):
                 gripper_measure = self.base.GetMeasuredGripperMovement(gripper_request)
                 if len(gripper_measure.finger):
                     current_pos = gripper_measure.finger[0].value
-                    # Check if close enough (tolerance 0.01)
+                    # 충분히 가까운지 확인 (오차 0.01)
                     if abs(current_pos - target_pos) < 0.01:
                         success = True
                         break
                     
-                    # Also check speed to see if it stopped (e.g. blocked)
-                    # Note: GetMeasuredGripperMovement with GRIPPER_SPEED might be needed for speed
-                    # But usually position feedback is enough. If it doesn't change for a while, it's done.
-                    # For simplicity, we just wait for position match or timeout.
-                    # If we want to detect "object grasped" (stopped before target), we need to check if position is stale.
+                    # 속도를 확인하여 멈췄는지 볼 수도 있음 (예: 막힘)
+                    # 참고: 속도를 위해서는 GRIPPER_SPEED 모드로 GetMeasuredGripperMovement가 필요할 수 있음
+                    # 하지만 보통 위치 피드백으로 충분함. 한동안 변하지 않으면 완료된 것임.
+                    # 간단하게 하기 위해 위치 일치 또는 타임아웃만 기다림.
+                    # "물체 잡음"(목표 전 멈춤)을 감지하려면 위치가 정체되었는지 확인해야 함.
                 
                 time.sleep(0.1)
             

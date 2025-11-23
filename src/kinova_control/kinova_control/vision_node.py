@@ -16,15 +16,15 @@ class VisionNode(Node):
     def __init__(self):
         super().__init__('vision_node')
 
-        # Parameters
-        self.declare_parameter('marker_size', 0.03) # meters (30mm)
+        # 파라미터
+        self.declare_parameter('marker_size', 0.03) # 미터 단위 (30mm)
         self.declare_parameter('dictionary_id', 'DICT_4X4_50')
         
         self.marker_size = self.get_parameter('marker_size').value
         self.dictionary_id_str = self.get_parameter('dictionary_id').value
 
-        # ArUco Dictionary Setup
-        # Load both 4x4 and 6x6 dictionaries
+        # ArUco 딕셔너리 설정
+        # 4x4 및 6x6 딕셔너리 모두 로드
         self.dictionaries = {
             "4x4": cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50),
             "6x6": cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_50)
@@ -32,13 +32,13 @@ class VisionNode(Node):
         self.get_logger().info("Loaded ArUco Dictionaries: DICT_4X4_50, DICT_6X6_50")
         self.aruco_params = cv2.aruco.DetectorParameters()
 
-        # RealSense Setup
+        # RealSense 설정
         self.pipeline = rs.pipeline()
         self.config = rs.config()
         self.config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
         self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 
-        # Align depth to color
+        # 깊이와 컬러 정렬
         self.align = rs.align(rs.stream.color)
 
         try:
@@ -48,7 +48,7 @@ class VisionNode(Node):
             self.get_logger().error(f"Failed to start RealSense: {e}")
             sys.exit(1)
 
-        # Subscribers
+        # 서브스크라이버
         self.trigger_sub = self.create_subscription(
             Int32,
             '/kinova/int/camera_trigger',
@@ -56,10 +56,10 @@ class VisionNode(Node):
             10
         )
 
-        # Publishers
+        # 퍼블리셔
         self.pose_pub = self.create_publisher(Float32MultiArray, '/kinova/vision/detected_pose', 10)
 
-        # Storage for latest frame
+        # 최신 프레임 저장
         self.latest_color_image = None
         self.latest_camera_matrix = None
         self.latest_dist_coeffs = None
@@ -67,8 +67,8 @@ class VisionNode(Node):
         self.get_logger().info("Vision Node Initialized. Waiting for trigger...")
 
     def update_frame(self):
-        # Wait for a coherent pair of frames: depth and color
-        # Using a small timeout to not block ROS spinning too long if no frame
+        # 일관된 프레임 쌍 대기: 깊이 및 컬러
+        # 프레임이 없을 경우 ROS 스피닝을 너무 오래 차단하지 않도록 짧은 타임아웃 사용
         try:
             frames = self.pipeline.wait_for_frames(timeout_ms=100)
         except RuntimeError:
@@ -80,14 +80,14 @@ class VisionNode(Node):
         if not color_frame:
             return
 
-        # Convert images to numpy arrays
+        # 이미지를 numpy 배열로 변환
         self.latest_color_image = np.asanyarray(color_frame.get_data())
 
-        # Get camera intrinsics
+        # 카메라 내부 파라미터 가져오기
         profile = color_frame.get_profile()
         self.latest_camera_matrix, self.latest_dist_coeffs = self.get_camera_matrix(profile)
 
-        # Display
+        # 디스플레이
         cv2.imshow("RealSense Feed", self.latest_color_image)
         cv2.waitKey(1)
 
@@ -113,7 +113,7 @@ class VisionNode(Node):
         camera_matrix = self.latest_camera_matrix
         dist_coeffs = self.latest_dist_coeffs
 
-        # Detect markers using multiple dictionaries
+        # 여러 딕셔너리를 사용하여 마커 감지
         found_marker = False
         
         for dict_name, dictionary in self.dictionaries.items():
@@ -125,46 +125,46 @@ class VisionNode(Node):
                 self.get_logger().info(f"Found Marker ID {target_id} in {dict_name} dictionary")
                 index = np.where(ids == target_id)[0][0]
                 
-                # Estimate pose
+                # 포즈 추정
                 rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(
                     corners[index], self.marker_size, camera_matrix, dist_coeffs
                 )
 
-                # rvec and tvec are (1, 1, 3)
+                # rvec과 tvec은 (1, 1, 3) 형태임
                 rvec = rvec[0][0]
                 tvec = tvec[0][0]
 
                 self.get_logger().info(f"Found Marker {target_id} at {tvec}")
 
-                # Convert rvec (Rodrigues) to Rotation Matrix (3x3)
+                # rvec(Rodrigues)을 회전 행렬(3x3)로 변환
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
 
-                # Construct 4x4 Homogeneous Transformation Matrix
+                # 4x4 동차 변환 행렬 구성
                 transform_matrix = np.eye(4, dtype=np.float32)
                 transform_matrix[0:3, 0:3] = rotation_matrix
                 transform_matrix[0:3, 3] = tvec
 
-                # Publish Float32MultiArray (Flattened 4x4 matrix)
+                # Float32MultiArray 발행 (평탄화된 4x4 행렬)
                 matrix_msg = Float32MultiArray()
                 matrix_msg.data = transform_matrix.flatten().tolist()
 
                 self.pose_pub.publish(matrix_msg)
                 self.get_logger().info("Pose matrix published")
 
-                # Draw axis for visualization
+                # 시각화를 위한 축 그리기
                 cv2.drawFrameAxes(self.latest_color_image, camera_matrix, dist_coeffs, rvec, tvec, 0.01)
-                # Draw marker border
+                # 마커 테두리 그리기
                 cv2.aruco.drawDetectedMarkers(self.latest_color_image, corners)
                 
                 found_marker = True
                 break # Stop searching other dictionaries if found
 
         if found_marker:
-            # Force update display immediately to show the drawing
+            # 그림을 즉시 표시하기 위해 디스플레이 강제 업데이트
             cv2.imshow("RealSense Feed", self.latest_color_image)
             cv2.waitKey(1)
             
-            # Pause for debugging visualization (2 seconds)
+            # 디버깅 시각화를 위해 일시 정지 (0.5초)
             self.get_logger().info("Pausing display for visualization...")
             time.sleep(0.5)
 

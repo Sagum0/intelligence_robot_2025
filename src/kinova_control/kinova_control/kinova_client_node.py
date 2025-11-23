@@ -14,7 +14,7 @@ class KinovaClientNode(Node):
         super().__init__('kinova_client_node')
         self.cli = self.create_client(KinovaExecutor, '/kinova/execute')
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
+            self.get_logger().info('서비스를 사용할 수 없습니다. 다시 기다리는 중...')
         
         self.sub = self.create_subscription(
             KinovaCommand,
@@ -22,7 +22,8 @@ class KinovaClientNode(Node):
             self.topic_callback,
             10
         )
-        self.get_logger().info('Kinova Client Node Initialized. Waiting for commands on /kinova/client_command...')
+        
+        self.get_logger().info('Kinova Client 노드가 초기화되었습니다. /kinova/client_command 명령을 기다리는 중...')
         
         self.result_pub = self.create_publisher(Bool, '/kinova/service_result', 10)
 

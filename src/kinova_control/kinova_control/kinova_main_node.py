@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String, Bool
+from std_msgs.msg import String, Bool, Float32
 from kinova_msgs.msg import KinovaCommand
 from kinova_control.module import *
 import threading
@@ -15,26 +15,28 @@ class KinovaMainNode(Node):
         
         self.lock = threading.Lock()
         
-        # Publishers
+        # 퍼블리셔
         self.cmd_pub = self.create_publisher(KinovaCommand, '/kinova/client_command', 10)
-        
-        # Subscribers
+        self.grip_pub = self.create_publisher(Float32, '/kinova/float/grp_cmd', 10)
+
+        # 서브스크라이버
         self.result_sub = self.create_subscription(Bool, '/kinova/service_result', self.result_callback, 10)
         self.action_sub = self.create_subscription(String, '/kinova/string/action_def', self.action_callback, 10)
+        self.grip_sub   = self.create_subscription(Bool, '/kinova/bool/grp_done', self.grip_callback, 10)
         
-        # FSM Variables
+        # FSM 변수
         self.handler = None
         self.current_step = None
         self.next_step = None
         self.current_flag = 'idle'
         
-        # Debug Variables
+        # 디버그 변수
         self.last_handler_name = None
         self.last_step = None
         self.last_flag = None
         self.last_next_step = None
         
-        # Timer
+        # 타이머
         self.timer = self.create_timer(0.05, self.loop) # 20Hz
 
     def action_callback(self, msg):
@@ -57,13 +59,28 @@ class KinovaMainNode(Node):
             else:
                 self.get_logger().warn(f'[MAIN] Unknown Command: {command}')
 
+    def grip_callback(self, msg):
+        with self.lock:
+            # waiting 상태는 허용, 그 외 바쁜 상태는 무시
+            if self.current_flag != 'idle' and self.current_flag != 'waiting':
+                self.get_logger().warn(f'[MAIN] Busy ({self.current_flag}). Ignoring command: {msg.data}')
+                return
+
+            if msg.data: # 성공
+                if self.current_flag == 'waiting':
+                    self.current_flag = 'done'
+                    self.get_logger().info('[MAIN] Gripper Completed Successfully')
+            else: # 실패
+                self.get_logger().warn('[MAIN] Gripper Failed')
+                self.current_flag = 'fail'
+
     def result_callback(self, msg):
         with self.lock:
-            if msg.data: # Success
+            if msg.data: # 성공
                 if self.current_flag == 'waiting':
                     self.current_flag = 'done'
                     self.get_logger().info('[MAIN] Action Completed Successfully')
-            else: # Fail
+            else: # 실패
                 self.get_logger().warn('[MAIN] Action Failed')
                 self.current_flag = 'fail'
 
@@ -110,7 +127,7 @@ class KinovaMainNode(Node):
                     self.current_flag = 'order'
                     
         elif current_flag == 'waiting':
-            pass # Wait for result_callback
+            pass # result_callback 대기
             
         elif current_flag == 'done':
             with self.lock:
@@ -125,7 +142,7 @@ class KinovaMainNode(Node):
                     self.next_step = None
                 
         elif current_flag == 'fail':
-            # Handle failure (retry or stop)
+            # 실패 처리 (재시도 또는 중지)
             self.get_logger().error('[MAIN] Stopped due to failure')
             with self.lock:
                 self.current_flag = 'idle'
@@ -137,11 +154,17 @@ class KinovaMainNode(Node):
             cmd_msg = KinovaCommand()
             cmd_msg.frame = ans['frame']
             cmd_msg.coordinate = ans['position']
-            # Speed is not in KinovaCommand yet, ignoring for now or could extend message
+            # 속도는 아직 KinovaCommand에 없으므로 무시하거나 메시지를 확장할 수 있음
             
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
 
+        if ans.get('gripper') is not None:
+            grip_cmd = Float32()
+            grip_cmd.data = float(ans['gripper'])
+
+            self.grip_pub.publish(grip_cmd)
+            self.get_logger().info(f"[MAIN] Published Grip Command: {grip_cmd.data}")
 
     def check_state_change(self, handler, step, flag, next_step):
         handler_name = handler.__class__.__name__ if handler else "None"
@@ -162,6 +185,7 @@ class KinovaMainNode(Node):
             self.last_step = step
             self.last_flag = flag
             self.last_next_step = next_step
+
 def main(args=None):
     rclpy.init(args=args)
     node = KinovaMainNode()
