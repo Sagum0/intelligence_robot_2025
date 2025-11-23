@@ -12,11 +12,7 @@ from scipy.spatial.transform import Rotation as R
 class PoseCalculatorNode(Node):
     def __init__(self):
         super().__init__('pose_calculator_node')
-
-        # 최신 관절 각도 저장
         self.current_joint_angles = None
-
-        # 서브스크라이버
         self.joint_sub = self.create_subscription(
             JointState,
             '/kinova/joint_states',
@@ -67,21 +63,6 @@ class PoseCalculatorNode(Node):
             self.get_logger().error(f"FK Error: {e}")
 
     def joint_callback(self, msg):
-        # 관절 각도 저장 (라디안 단위, DH 순서와 일치한다고 가정)
-        # Gen3 관절은 보통 joint_1, joint_2, ... 로 명명됨
-        # 리스트 순서가 올바르다고 가정함.
-        # 드라이버가 도(degree) 단위로 발행한다면 변환이 필요함.
-        # kortex_driver는 보통 Action에 대해 도 단위를 사용하지만, 우리 드라이버의 JointState는?
-        # kinova_driver_node.py를 확인해보면 feedback.actuators[i].position을 가져옴. Kortex API는 보통 도 단위를 반환함.
-        # JointState 표준은 라디안임.
-        # 하지만 우리 드라이버는 actuator.position을 그대로 복사함.
-        # 일반적인 Kortex 사용법에 따라 도 단위라고 가정하지만 확인이 필요함.
-        # 잠시만, 표준 ROS JointState는 라디안임.
-        # 만약 우리 드라이버가 도 단위를 발행한다면 수학 계산을 위해 라디안으로 변환해야 함.
-        # 드라이버가 API가 주는 값을 그대로 발행한다고 가정함.
-        # Kortex API 위치는 도 단위임.
-        # 따라서 여기서 라디안으로 변환함.
-        
         self.current_joint_angles = np.radians(np.array(msg.position))
 
     def dh_transform(self, theta, d, a, alpha):
@@ -98,15 +79,6 @@ class PoseCalculatorNode(Node):
         ])
 
     def compute_fk(self, joints):
-        """
-        Base -> Camera FK
-        - 0~6 : Gen3 Lite 공식 DH (6번은 q6 + pi/2 사용)
-        - 6 -> C1 -> C2 -> C : 카메라 마운트 고정 변환
-        """
-
-        # -------------------------------
-        # 1. Base -> Joint6 (Flange)  DH
-        # -------------------------------
         # 1: theta_1, 243.3, 0.0, pi/2
         T_0_1 = self.dh_transform(joints[0], 0.2433, 0.0, math.pi/2)
 
@@ -123,42 +95,19 @@ class PoseCalculatorNode(Node):
         T_4_5 = self.dh_transform(joints[4] + math.pi, 0.057, 0.0, math.pi/2)
 
         # 6: (공식 DH 기준) theta_6 + pi/2, d6=0, a6=0, alpha6=0
-        #    → 6번 조인트 축만 정의, 실제 마운트 길이는 아래 6->C1에서 처리
         T_5_6 = self.dh_transform(joints[5] + math.pi/2, 0.0, 0.0, 0.0)
 
         T_base_6 = T_0_1 @ T_1_2 @ T_2_3 @ T_3_4 @ T_4_5 @ T_5_6
 
-        # -------------------------------------
-        # 2. Joint6 -> Camera Mount (고정변환)
-        #    6 -> C1 -> C2 -> C
-        # -------------------------------------
-
-        # 6 -> C1 : z6 방향으로 +33.636mm 평행이동 (회전 없음)
-        #  (그림에서 33.636 표시된 수직 거리)
         T_6_c1 = self.dh_transform(0.0, 0.033636, 0.0, 0.0)
 
-        # C1 -> C2 : x_c1 방향으로 -66.577mm (그림의 66.577 길이, 부호는 사용자가 정한 축에 맞춤)
         T_c1_c2 = self.dh_transform(0.0, 0.0, -0.066577, 0.0)
 
-        # C2 -> C : z_c2 축 기준 -90deg 회전, x_c2 방향으로 -32.5mm
-        # (그림에서 마지막 수평 오프셋 32.5와 카메라 프레임의 회전 포함)
         T_c2_c = self.dh_transform(-math.pi/2, 0.0, -0.0325, 0.0)
 
-        # 6에서 카메라까지
         T_6_camera = T_6_c1 @ T_c1_c2 @ T_c2_c
 
-        # -------------------------------------
-        # 3. (선택) 카메라 Optical Frame 보정
-        # -------------------------------------
-        # 현재는 물리 카메라 프레임 = 광학 프레임이라고 가정 (항등)
         T_optical_correction = np.eye(4)
-        # 필요하면 예시처럼 조정
-        # R_corr = R.from_euler('z', -90, degrees=True).as_matrix()
-        # T_optical_correction[:3, :3] = R_corr
-
-        # -------------------------------------
-        # 4. 최종 Base -> Camera
-        # -------------------------------------
         T_base_camera = T_base_6 @ T_6_camera @ T_optical_correction
 
         return T_base_camera

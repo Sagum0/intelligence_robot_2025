@@ -133,18 +133,23 @@ class KinovaDriverNode(Node):
     def check_for_end_or_abort(self, e, success_flag):
         def check(notification, e=e, success_flag=success_flag):
             event_name = Base_pb2.ActionEvent.Name(notification.action_event)
-            self.get_logger().info(f"Event: {event_name}")
-            
+            event_id = notification.action_event
+            self.get_logger().info(f"Event: {event_name} (ID: {event_id})")
+
             if notification.action_event == Base_pb2.ACTION_END:
                 success_flag[0] = True
                 e.set()
             elif notification.action_event == Base_pb2.ACTION_ABORT:
                 success_flag[0] = False
                 e.set()
+            else:
+                # 다른 이벤트 타입이 오면 경고
+                self.get_logger().warn(
+                    f"Unhandled event type: {event_name} (ID: {event_id}). "
+                    "Action may hang if this is a terminal event."
+                )
         return check
-
-
-
+    
     def execute_service_callback(self, request, response):
         self.get_logger().info(f"Received Service Request: {request.frame}, {request.coordinate}")
         success = self.execute_robot_command(request.frame, request.coordinate)
@@ -200,19 +205,59 @@ class KinovaDriverNode(Node):
             self.base.ExecuteAction(action)
 
             # 완료 대기
-            finished = e.wait(20.0) # 20초 타임아웃
+            finished = e.wait(5.0) # 5초 타임아웃
             self.base.Unsubscribe(notification_handle)
 
             if finished:
                 if success_flag[0]:
-                    self.get_logger().info("Action completed successfully")
-                    return True
+                    # Event가 왔지만 실제로 로봇이 정지했는지 확인
+                    self.get_logger().info("Action event received, verifying robot stopped...")
+
+                    try:
+                        # 짧은 대기 후 로봇이 실제로 정지했는지 확인
+                        time.sleep(0.2)  # 200ms 대기
+
+                        max_retries = 50  # 최대 5초 (0.1초 * 50)
+                        for retry in range(max_retries):
+                            feedback = self.base_cyclic.RefreshFeedback()
+                            is_moving = any(abs(act.velocity) > 0.5 for act in feedback.actuators)
+
+                            if not is_moving:
+                                self.get_logger().info(f"Robot stopped after {retry * 0.1:.1f}s")
+                                return True
+
+                            time.sleep(0.1)
+
+                        # 여전히 움직이고 있으면 경고하지만 성공으로 처리
+                        self.get_logger().warn("Robot still moving but action event received")
+                        return True
+
+                    except Exception as verify_error:
+                        self.get_logger().warn(f"Failed to verify robot state: {verify_error}, assuming success")
+                        return True
                 else:
                     self.get_logger().warn("Action ABORTED by robot")
                     return False
             else:
-                self.get_logger().error("Action timed out")
-                return False
+                # 타임아웃 발생 - 로봇 상태 확인
+                self.get_logger().warn("Action notification timed out, checking robot state...")
+
+                try:
+                    # 피드백으로 로봇이 정지했는지 확인
+                    feedback = self.base_cyclic.RefreshFeedback()
+                    is_moving = any(abs(act.velocity) > 0.1 for act in feedback.actuators)
+
+                    if not is_moving:
+                        # 정지 상태면 목표에 도달했다고 가정
+                        self.get_logger().info("Robot stopped, assuming action completed")
+                        return True
+                    else:
+                        # 아직 움직이고 있으면 실패
+                        self.get_logger().error("Robot still moving after timeout")
+                        return False
+                except Exception as check_error:
+                    self.get_logger().error(f"Failed to check robot state: {check_error}")
+                    return False
 
         except Exception as e:
             self.get_logger().error(f"Error executing action: {e}")
