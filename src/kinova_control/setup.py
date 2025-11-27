@@ -24,7 +24,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'test_node = kinova_control.test_node:main',
             'kinova_driver_node = kinova_control.kinova_driver_node:main',
             'vision_node = kinova_control.vision_node:main',
             'pose_calculator_node = kinova_control.pose_calculator_node:main',

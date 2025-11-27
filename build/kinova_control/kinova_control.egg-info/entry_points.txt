@@ -3,6 +3,5 @@ kinova_client_node = kinova_control.kinova_client_node:main
 kinova_driver_node = kinova_control.kinova_driver_node:main
 kinova_main_node = kinova_control.kinova_main_node:main
 pose_calculator_node = kinova_control.pose_calculator_node:main
-test_node = kinova_control.test_node:main
 vision_node = kinova_control.vision_node:main
 

@@ -12,7 +12,6 @@ kinova_control/__init__.py
 kinova_control/kinova_client_node.py
 kinova_control/kinova_driver_node.py
 kinova_control/kinova_main_node.py
-kinova_control/kinova_server_node.py
 kinova_control/module.py
 kinova_control/pose_calculator_node.py
 kinova_control/utilities.py
