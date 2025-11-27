@@ -16,6 +16,7 @@ kinova_control/module.py
 kinova_control/pose_calculator_node.py
 kinova_control/utilities.py
 kinova_control/vision_node.py
+kinova_control/vision_node_custom.py
 kinova_control.egg-info/PKG-INFO
 kinova_control.egg-info/SOURCES.txt
 kinova_control.egg-info/dependency_links.txt

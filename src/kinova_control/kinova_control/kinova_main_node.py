@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String, Bool, Float32, Float32MultiArray, Int32
+from std_msgs.msg import String, Bool, Float32, Float32MultiArray, Int32, Int32MultiArray
 from kinova_msgs.msg import KinovaCommand
 from sensor_msgs.msg import JointState
 from kinova_control.module import *
@@ -11,6 +11,8 @@ import time, math
 from scipy.spatial.transform import Rotation as R
 
 import numpy as np
+
+MAKER_OFFSET = 0.04
 
 class KinovaMainNode(Node):
     def __init__(self):
@@ -23,14 +25,14 @@ class KinovaMainNode(Node):
         self.cmd_pub = self.create_publisher(KinovaCommand, '/kinova/client_command', 10)
         self.grip_pub = self.create_publisher(Float32, '/kinova/float/grp_cmd', 10)
 
-        self.id_pub = self.create_publisher(Int32, '/kinova/int/camera_trigger', 10)
+        self.id_pub = self.create_publisher(Int32MultiArray, '/kinova/array/camera_trigger', 10)
 
         # 서브스크라이버
         self.result_sub = self.create_subscription(Bool, '/kinova/service_result', self.result_callback, 10)
         self.action_sub = self.create_subscription(String, '/kinova/string/action_def', self.action_callback, 10)
         self.grip_sub   = self.create_subscription(Bool, '/kinova/bool/grp_done', self.grip_callback, 10)
         self.joint_sub = self.create_subscription(JointState, '/kinova/joint_states', self.joint_callback, 10)
-        self.vision_sub = self.create_subscription(Float32MultiArray, '/kinova/vision/detected_pose', self.vision_callback, 10)
+        self.vision_sub = self.create_subscription(Float32MultiArray, '/kinova/array/detected_pose', self.vision_callback, 10)
         
         self.current_joint_angles = None
         
@@ -46,10 +48,18 @@ class KinovaMainNode(Node):
         self.last_flag = None
         self.last_next_step = None
         
-        self.id_pose = None
+        self.param_init()
         
         # 타이머
-        self.timer = self.create_timer(0.05, self.loop) # 20Hz
+        self.timer = self.create_timer(0.05, self.loop)
+
+    def param_init(self):
+        with self.lock:
+            self.id_len = None
+            self.id_pose = None
+            self.detected_poses = {}
+            self.requested_ids = []
+            self.next_block = None
         
     def dh_transform(self, theta, d, a, alpha):
         ct = math.cos(theta)
@@ -69,32 +79,17 @@ class KinovaMainNode(Node):
             self.current_joint_angles = np.radians(np.array(msg.position))
             
     def compute_fk(self, joints):
-        # 1: theta_1, 243.3, 0.0, pi/2
         T_0_1 = self.dh_transform(joints[0], 0.2433, 0.0, math.pi/2)
-
-        # 2: theta_2 + pi/2, 30.0, 280.0, pi
         T_1_2 = self.dh_transform(joints[1] + math.pi/2, 0.030, 0.280, math.pi)
-
-        # 3: theta_3 + pi/2, 20.0, 0.0, pi/2
         T_2_3 = self.dh_transform(joints[2] + math.pi/2, 0.020, 0.0, math.pi/2)
-
-        # 4: theta_4 + pi/2, 245.0, 0.0, pi/2
         T_3_4 = self.dh_transform(joints[3] + math.pi/2, 0.245, 0.0, math.pi/2)
-
-        # 5: theta_5 + pi, 57.0, 0.0, pi/2
         T_4_5 = self.dh_transform(joints[4] + math.pi, 0.057, 0.0, math.pi/2)
-
-        # 6: (공식 DH 기준) theta_6 + pi/2, d6=0, a6=0, alpha6=0
         T_5_6 = self.dh_transform(joints[5] + math.pi/2, 0.0, 0.0, 0.0)
 
         T_base_6 = T_0_1 @ T_1_2 @ T_2_3 @ T_3_4 @ T_4_5 @ T_5_6
-
         T_6_c1 = self.dh_transform(0.0, 0.033636, 0.0, 0.0)
-
         T_c1_c2 = self.dh_transform(0.0, 0.0, -0.066577, 0.0)
-
         T_c2_c = self.dh_transform(-math.pi/2, 0.0, -0.0325, 0.0)
-
         T_6_camera = T_6_c1 @ T_c1_c2 @ T_c2_c
 
         T_optical_correction = np.eye(4)
@@ -113,45 +108,42 @@ class KinovaMainNode(Node):
         
         else:
             with self.lock:
-                # 1. 카메라-마커 변환 가져오기
-                T_camera_marker = np.array(msg.data).reshape(4, 4)
-
-                # 2. 베이스-카메라 변환 계산 (FK)
-                try:
-                    T_base_camera = self.compute_fk(self.current_joint_angles)
-                except Exception as e:
-                    self.get_logger().error(f"FK Computation Error: {e}")
+                data = np.array(msg.data)
+                expected_size = len(self.requested_ids) * 16
+                if len(data) != expected_size:
+                    self.get_logger().warn(f"Received data size {len(data)} does not match requested IDs count {len(self.requested_ids)} * 16")
                     return
 
-                # 3. 베이스-마커 변환 계산
-                T_base_marker = T_base_camera @ T_camera_marker
-
-                # 4. 결과 출력
-                print("\n" + "="*50)
-                print("Base to Aruco Marker Pose Calculation")
-                print("="*50)
+                num_poses = len(self.requested_ids)
                 
-                print("\n[1] 4x4 Transformation Matrix (Base -> Marker):")
-                print(T_base_marker)
+                if num_poses > 0:
+                    self.detected_poses = {}
 
-                # 이동(Translation) 추출
-                P = T_base_marker[0:3, 3]
+                    try:
+                        T_base_camera = self.compute_fk(self.current_joint_angles)
+                    except Exception as e:
+                        self.get_logger().error(f"FK Computation Error: {e}")
+                        return
 
-                # 회전(Rotation) 추출 (RPY)
-                rotation = R.from_matrix(T_base_marker[0:3, 0:3])
-                r, p, y_angle = rotation.as_euler('xyz', degrees=True)
+                    for i, marker_id in enumerate(self.requested_ids):
+                        pose_data = data[i*16 : (i+1)*16]
+                        T_camera_marker = pose_data.reshape(4, 4)
 
-                print("\n[2] Pose (x, y, z, r, p, y):")
-                print(f"x: {P[0]:.4f} m")
-                print(f"y: {P[1]:.4f} m")
-                print(f"z: {P[2]:.4f} m")
-                print(f"r: {r:.4f} deg")
-                print(f"p: {p:.4f} deg")
-                print(f"y: {y_angle:.4f} deg")
-                print("="*50 + "\n")
+                        T_base_marker = T_base_camera @ T_camera_marker
+                        self.detected_poses[marker_id] = T_base_marker
+                        
+                        print("\n" + "="*50)
+                        print(f"Base to Aruco Marker Pose Calculation (ID: {marker_id})")
+                        print("="*50)
+                        print(T_base_marker)
+                        
+                        P = T_base_marker[0:3, 3]
+                        rotation = R.from_matrix(T_base_marker[0:3, 0:3])
+                        r, p, y_angle = rotation.as_euler('xyz', degrees=True)
+                        
+                        print(f"Pose: x={P[0]:.4f}, y={P[1]:.4f}, z={P[2]:.4f}, r={r:.4f}, p={p:.4f}, y={y_angle:.4f}")
+                        print("="*50 + "\n")
 
-                self.id_pose = T_base_marker
-                
                 if self.current_flag == 'waiting':
                         self.current_flag = 'done'
 
@@ -168,35 +160,37 @@ class KinovaMainNode(Node):
                 self.handler = Midterm_1()
                 self.current_step = 'step_1'
                 self.current_flag = 'order'
+
             elif command == 'MIDTERM_TWO':
                 self.handler = Midterm_2()
                 self.current_step = 'step_1'
                 self.current_flag = 'order'
+
             else:
                 self.get_logger().warn(f'[MAIN] Unknown Command: {command}')
 
     def grip_callback(self, msg):
         with self.lock:
-            # waiting 상태는 허용, 그 외 바쁜 상태는 무시
+
             if self.current_flag != 'idle' and self.current_flag != 'waiting':
                 self.get_logger().warn(f'[MAIN] Busy ({self.current_flag}). Ignoring command: {msg.data}')
                 return
 
-            if msg.data: # 성공
+            if msg.data:
                 if self.current_flag == 'waiting':
                     self.current_flag = 'done'
                     self.get_logger().info('[MAIN] Gripper Completed Successfully')
-            else: # 실패
+            else:
                 self.get_logger().warn('[MAIN] Gripper Failed')
                 self.current_flag = 'fail'
 
     def result_callback(self, msg):
         with self.lock:
-            if msg.data: # 성공
+            if msg.data:
                 if self.current_flag == 'waiting':
                     self.current_flag = 'done'
                     self.get_logger().info('[MAIN] Action Completed Successfully')
-            else: # 실패
+            else:
                 self.get_logger().warn('[MAIN] Action Failed')
                 self.current_flag = 'fail'
 
@@ -229,7 +223,6 @@ class KinovaMainNode(Node):
 
             self.get_logger().info(f'[MAIN] Executing Step: {current_step}')
             
-            # Module Translator
             self.module_translator(ans)
             
             requires_ack = ans.get('requires_ack', True)
@@ -243,7 +236,7 @@ class KinovaMainNode(Node):
                     self.current_flag = 'order'
                     
         elif current_flag == 'waiting':
-            pass # result_callback 대기
+            pass
             
         elif current_flag == 'done':
             with self.lock:
@@ -258,7 +251,6 @@ class KinovaMainNode(Node):
                     self.next_step = None
                 
         elif current_flag == 'fail':
-            # 실패 처리 (재시도 또는 중지)
             self.get_logger().error('[MAIN] Stopped due to failure')
             with self.lock:
                 self.current_flag = 'idle'
@@ -281,78 +273,126 @@ class KinovaMainNode(Node):
             self.grip_pub.publish(grip_cmd)
             self.get_logger().info(f"[MAIN] Published Grip Command: {grip_cmd.data}")
             
-        if ans.get('request_id') is not None:
-            id_cmd = Int32()
-            id_cmd.data = int(ans['request_id'])
+        if ans.get('camera_trigger') is not None:
+            id_cmd = Int32MultiArray()
+            req_id = ans['camera_trigger']
+            
+            with self.lock:
+                self.requested_ids = req_id if isinstance(req_id, list) else [req_id]
+                
+            id_cmd.data = self.requested_ids
             self.id_pub.publish(id_cmd)
-            self.get_logger().info(f"[MAIN] Published Camera Trigger ID: {id_cmd.data}")
-            
-        if ans.get('id_move_top'):
-            with self.lock:
-                pose = self.id_pose
+            self.get_logger().info(f"[MAIN] Published Camera Trigger IDs: {id_cmd.data}")
 
-            if pose is None:
-                self.get_logger().warn("[MAIN] No pose available for id_move")
+
+        if ans.get('move_pick_top'):
+            with self.lock:
+                offset = ans['idx_offset']
+                id_pose = self.detected_poses.get(self.requested_ids[0+ offset])
+            
+            if id_pose is None:
+                self.get_logger().warn("[MAIN] No pose available for move_pick_top")
                 return
 
-            # 위치(translation) 추출
-            P = pose[:3, 3]
-
-            # 회전(rotation) 추출 및 RPY 변환
-            rotation = R.from_matrix(pose[:3, :3])
-            r, p, y = rotation.as_euler('xyz', degrees=True)
+            P = id_pose[:3, 3]
 
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [P[0]+0.04, P[1], 0.15, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
+
+            self.cmd_pub.publish(cmd_msg)
+            self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
+
+        if ans.get('move_pick'):
+            with self.lock:
+                offset = ans['idx_offset']
+                id_pose = self.detected_poses.get(self.requested_ids[0 + offset])
+            
+            if id_pose is None:
+                self.get_logger().warn("[MAIN] No pose available for move_pick_top")
+                return
+
+            P = id_pose[:3, 3]
+
+            cmd_msg = KinovaCommand()
+            cmd_msg.frame = 'cartesian'
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.030, 179.0, 0.0, 90.0]
+
+            self.cmd_pub.publish(cmd_msg)
+            self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
+
+        if ans.get('move_pick_after'):
+            with self.lock:
+                offset = ans['idx_offset']
+                id_pose = self.detected_poses.get(self.requested_ids[0 + offset])
+            
+            if id_pose is None:
+                self.get_logger().warn("[MAIN] No pose available for move_pick_top")
+                return
+
+            P = id_pose[:3, 3]
+
+            cmd_msg = KinovaCommand()
+            cmd_msg.frame = 'cartesian'
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
+
+            self.cmd_pub.publish(cmd_msg)
+            self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
+        
+        if ans.get('move_drop_top'):
+            with self.lock:
+                offset = ans['idx_offset']
+                id_pose = self.detected_poses.get(self.requested_ids[1 + offset])
+            
+            if id_pose is None:
+                self.get_logger().warn("[MAIN] No pose available for move_pick_top")
+                return
+
+            P = id_pose[:3, 3]
+
+            cmd_msg = KinovaCommand()
+            cmd_msg.frame = 'cartesian'
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
+
+            self.cmd_pub.publish(cmd_msg)
+            self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
+
+        if ans.get('move_drop'):
+            with self.lock:
+                offset = ans['idx_offset']
+                id_pose = self.detected_poses.get(self.requested_ids[1 + offset])
+            
+            if id_pose is None:
+                self.get_logger().warn("[MAIN] No pose available for move_pick_top")
+                return
+
+            P = id_pose[:3, 3]
+
+            cmd_msg = KinovaCommand()
+            cmd_msg.frame = 'cartesian'
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.034, 179.0, 0.0, 90.0]
 
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
             
-        if ans.get('id_move_pick'):
+        if ans.get('move_drop_top'):
             with self.lock:
-                pose = self.id_pose
-
-            if pose is None:
-                self.get_logger().warn("[MAIN] No pose available for id_move")
+                offset = ans['idx_offset']
+                id_pose = self.detected_poses.get(self.requested_ids[1 + offset])
+            
+            if id_pose is None:
+                self.get_logger().warn("[MAIN] No pose available for move_pick_top")
                 return
 
-            # 위치(translation) 추출
-            P = pose[:3, 3]
-
-            # 회전(rotation) 추출 및 RPY 변환
-            rotation = R.from_matrix(pose[:3, :3])
-            r, p, y = rotation.as_euler('xyz', degrees=True)
+            P = id_pose[:3, 3]
 
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [P[0]+0.04, P[1], 0.035, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
 
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
-            
-        if ans.get('id_move_place'):
-            with self.lock:
-                pose = self.id_pose
 
-            if pose is None:
-                self.get_logger().warn("[MAIN] No pose available for id_move")
-                return
-
-            # 위치(translation) 추출
-            P = pose[:3, 3]
-
-            # 회전(rotation) 추출 및 RPY 변환
-            rotation = R.from_matrix(pose[:3, :3])
-            r, p, y = rotation.as_euler('xyz', degrees=True)
-
-            cmd_msg = KinovaCommand()
-            cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [P[0]+0.04, P[1], 0.04, 179.0, 0.0, 90.0]
-
-            self.cmd_pub.publish(cmd_msg)
-            self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
-            
 
     def check_state_change(self, handler, step, flag, next_step):
         handler_name = handler.__class__.__name__ if handler else "None"

@@ -1,0 +1,20 @@
+[0.293s] Invoking command in '/home/pc/intelrb_ws/build/kinova_control': PYTHONPATH=/home/pc/intelrb_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pc/intelrb_ws/build/kinova_control/build --no-deps symlink_data
+[0.421s] running develop
+[0.501s] running egg_info
+[0.501s] writing kinova_control.egg-info/PKG-INFO
+[0.501s] writing dependency_links to kinova_control.egg-info/dependency_links.txt
+[0.501s] writing entry points to kinova_control.egg-info/entry_points.txt
+[0.501s] writing requirements to kinova_control.egg-info/requires.txt
+[0.501s] writing top-level names to kinova_control.egg-info/top_level.txt
+[0.502s] reading manifest file 'kinova_control.egg-info/SOURCES.txt'
+[0.502s] writing manifest file 'kinova_control.egg-info/SOURCES.txt'
+[0.503s] running build_ext
+[0.503s] Creating /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova-control.egg-link (link to .)
+[0.503s] Installing kinova_client_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.503s] Installing kinova_driver_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.503s] Installing kinova_main_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.503s] Installing vision_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.503s] 
+[0.503s] Installed /home/pc/intelrb_ws/build/kinova_control
+[0.503s] running symlink_data
+[0.514s] Invoked command in '/home/pc/intelrb_ws/build/kinova_control' returned '0': PYTHONPATH=/home/pc/intelrb_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pc/intelrb_ws/build/kinova_control/build --no-deps symlink_data

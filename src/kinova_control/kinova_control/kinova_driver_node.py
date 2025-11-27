@@ -281,8 +281,7 @@ class KinovaDriverNode(Node):
             
             self.base.SendGripperCommand(gripper_command)
             
-            # 완료 대기
-            # 그리퍼가 목표에 도달하거나 멈출 때까지 상태 폴링
+            # 완료 대기 (Stall Detection)
             gripper_request = Base_pb2.GripperRequest()
             gripper_request.mode = Base_pb2.GRIPPER_POSITION
             
@@ -290,28 +289,40 @@ class KinovaDriverNode(Node):
             timeout = 5.0 # 초
             
             success = False
+            last_pos = -1.0
+            stable_count = 0
+            required_stable_count = 5 # 0.1s * 5 = 0.5s stable
             
             while (time.time() - start_time) < timeout:
                 gripper_measure = self.base.GetMeasuredGripperMovement(gripper_request)
                 if len(gripper_measure.finger):
                     current_pos = gripper_measure.finger[0].value
-                    # 충분히 가까운지 확인 (오차 0.01)
+                    
+                    # 1. Check if target reached
                     if abs(current_pos - target_pos) < 0.01:
                         success = True
+                        self.get_logger().info("Gripper reached target position.")
                         break
                     
-                    # 속도를 확인하여 멈췄는지 볼 수도 있음 (예: 막힘)
-                    # 참고: 속도를 위해서는 GRIPPER_SPEED 모드로 GetMeasuredGripperMovement가 필요할 수 있음
-                    # 하지만 보통 위치 피드백으로 충분함. 한동안 변하지 않으면 완료된 것임.
-                    # 간단하게 하기 위해 위치 일치 또는 타임아웃만 기다림.
-                    # "물체 잡음"(목표 전 멈춤)을 감지하려면 위치가 정체되었는지 확인해야 함.
+                    # 2. Check for stall (object grasped)
+                    if abs(current_pos - last_pos) < 0.005: # Movement < 0.5%
+                        stable_count += 1
+                    else:
+                        stable_count = 0
+                        
+                    if stable_count >= required_stable_count:
+                        success = True
+                        self.get_logger().info("Gripper stopped moving (likely grasped object).")
+                        break
+                        
+                    last_pos = current_pos
                 
                 time.sleep(0.1)
             
             if success:
                 self.get_logger().info("Gripper command completed successfully")
             else:
-                self.get_logger().warn("Gripper command timed out or did not reach target")
+                self.get_logger().warn("Gripper command timed out (still moving or communication issue)")
                 
             # Publish done status
             done_msg = Bool()

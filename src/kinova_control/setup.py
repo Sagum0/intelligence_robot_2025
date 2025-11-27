@@ -26,9 +26,9 @@ setup(
         'console_scripts': [
             'kinova_driver_node = kinova_control.kinova_driver_node:main',
             'vision_node = kinova_control.vision_node:main',
-            'pose_calculator_node = kinova_control.pose_calculator_node:main',
             'kinova_client_node = kinova_control.kinova_client_node:main',
             'kinova_main_node = kinova_control.kinova_main_node:main',
+            'custom_vision = kinova_control.vision_node_custom:main',
         ],
     },
 )
