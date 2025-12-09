@@ -12,7 +12,11 @@ from scipy.spatial.transform import Rotation as R
 
 import numpy as np
 
-MAKER_OFFSET = 0.04
+MAKER_OFFSET = 0.03
+
+BACKWARD = -0.008
+FORWARD = 0.005
+ERROR_TOL = 0.1
 
 class KinovaMainNode(Node):
     def __init__(self):
@@ -60,6 +64,14 @@ class KinovaMainNode(Node):
             self.detected_poses = {}
             self.requested_ids = []
             self.next_block = None
+            self.last_handler_name = None
+            self.last_step = None
+            self.last_flag = None
+            self.last_next_step = None
+            self.handler = None
+            self.current_step = None
+            self.next_step = None
+            self.current_flag = 'idle'
         
     def dh_transform(self, theta, d, a, alpha):
         ct = math.cos(theta)
@@ -210,6 +222,7 @@ class KinovaMainNode(Node):
             with self.lock:
                 self.current_flag = 'idle'
                 self.handler = None
+                self.param_init()
             return
 
         if current_flag == 'order':
@@ -272,6 +285,7 @@ class KinovaMainNode(Node):
 
             self.grip_pub.publish(grip_cmd)
             self.get_logger().info(f"[MAIN] Published Grip Command: {grip_cmd.data}")
+            time.sleep(0.8)
             
         if ans.get('camera_trigger') is not None:
             id_cmd = Int32MultiArray()
@@ -338,11 +352,38 @@ class KinovaMainNode(Node):
 
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
+
         
         if ans.get('move_drop_top'):
             with self.lock:
                 offset = ans['idx_offset']
                 id_pose = self.detected_poses.get(self.requested_ids[1 + offset])
+                if len(self.requested_ids) > 1:
+                    id_1 = self.requested_ids[0 + offset]
+                    id_2 = self.requested_ids[1 + offset]
+                    id_1_pose = self.detected_poses.get(id_1)
+                    id_2_pose = self.detected_poses.get(id_2)
+                    if id_1_pose is None or id_2_pose is None:
+                        self.get_logger().warn("[MAIN] No pose available for move_drop_top")
+                        return
+
+                    id_1_x = id_1_pose[0, 3]
+                    id_2_x = id_2_pose[0, 3]
+                    error = id_2_x - id_1_x
+
+                    if error > ERROR_TOL:
+                        X_OFFSET = BACKWARD
+                    elif error < -ERROR_TOL:
+                        X_OFFSET = FORWARD
+                    else:
+                        if error > 0.0:
+                            X_OFFSET = 0.0
+                        else:
+                            if abs(error) < 0.04:
+                                X_OFFSET = 0.0
+                            else:
+                                X_OFFSET = 0.003
+                    print(f"move_drop_top: error={error:.4f}, X_OFFSET={X_OFFSET:.4f}")
             
             if id_pose is None:
                 self.get_logger().warn("[MAIN] No pose available for move_pick_top")
@@ -352,7 +393,7 @@ class KinovaMainNode(Node):
 
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET+X_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
 
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
@@ -361,6 +402,32 @@ class KinovaMainNode(Node):
             with self.lock:
                 offset = ans['idx_offset']
                 id_pose = self.detected_poses.get(self.requested_ids[1 + offset])
+                if len(self.requested_ids) > 1:
+                    id_1 = self.requested_ids[0 + offset]
+                    id_2 = self.requested_ids[1 + offset]
+                    id_1_pose = self.detected_poses.get(id_1)
+                    id_2_pose = self.detected_poses.get(id_2)
+                    if id_1_pose is None or id_2_pose is None:
+                        self.get_logger().warn("[MAIN] No pose available for move_drop_top")
+                        return
+
+                    id_1_x = id_1_pose[0, 3]
+                    id_2_x = id_2_pose[0, 3]
+                    error = id_2_x - id_1_x
+
+                    if error > ERROR_TOL:
+                        X_OFFSET = BACKWARD
+                    elif error < -ERROR_TOL:
+                        X_OFFSET = FORWARD
+                    else:
+                        if error > 0.0:
+                            X_OFFSET = 0.0
+                        else:
+                            if abs(error) < 0.04:
+                                X_OFFSET = 0.0
+                            else:
+                                X_OFFSET = 0.003
+                    print(f"move_drop_top: error={error:.4f}, X_OFFSET={X_OFFSET:.4f}")
             
             if id_pose is None:
                 self.get_logger().warn("[MAIN] No pose available for move_pick_top")
@@ -370,7 +437,7 @@ class KinovaMainNode(Node):
 
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.034, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET+X_OFFSET, P[1], 0.034, 179.0, 0.0, 90.0]
 
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")
@@ -379,6 +446,32 @@ class KinovaMainNode(Node):
             with self.lock:
                 offset = ans['idx_offset']
                 id_pose = self.detected_poses.get(self.requested_ids[1 + offset])
+                if len(self.requested_ids) > 1:
+                    id_1 = self.requested_ids[0 + offset]
+                    id_2 = self.requested_ids[1 + offset]
+                    id_1_pose = self.detected_poses.get(id_1)
+                    id_2_pose = self.detected_poses.get(id_2)
+                    if id_1_pose is None or id_2_pose is None:
+                        self.get_logger().warn("[MAIN] No pose available for move_drop_top")
+                        return
+
+                    id_1_x = id_1_pose[0, 3]
+                    id_2_x = id_2_pose[0, 3]
+                    error = id_2_x - id_1_x
+
+                    if error > ERROR_TOL:
+                        X_OFFSET = BACKWARD
+                    elif error < -ERROR_TOL:
+                        X_OFFSET = FORWARD
+                    else:
+                        if error > 0.0:
+                            X_OFFSET = 0.0
+                        else:
+                            if abs(error) < 0.04:
+                                X_OFFSET = 0.0
+                            else:
+                                X_OFFSET = 0.003
+                    print(f"move_drop_top: error={error:.4f}, X_OFFSET={X_OFFSET:.4f}")
             
             if id_pose is None:
                 self.get_logger().warn("[MAIN] No pose available for move_pick_top")
@@ -388,7 +481,7 @@ class KinovaMainNode(Node):
 
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [P[0] + MAKER_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [P[0] + MAKER_OFFSET+X_OFFSET, P[1], 0.13, 179.0, 0.0, 90.0]
 
             self.cmd_pub.publish(cmd_msg)
             self.get_logger().info(f"[MAIN] Published Command: {cmd_msg.frame}, {cmd_msg.coordinate}")

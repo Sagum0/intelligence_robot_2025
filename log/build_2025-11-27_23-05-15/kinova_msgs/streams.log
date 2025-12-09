@@ -1,0 +1,275 @@
+[0.009s] Invoking command in '/home/pc/intelrb_ws/build/kinova_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/pc/robot_ws/install/kinova_control:/home/pc/cont_ws/install/torque_test_pkg:/home/pc/cont_ws/install/pid_pkg:/home/pc/cont_ws/install/finger_pkg:/home/pc/cont_ws/install/control_continuum:/opt/ros/humble /usr/bin/cmake /home/pc/intelrb_ws/src/kinova_msgs -DCMAKE_INSTALL_PREFIX=/home/pc/intelrb_ws/install/kinova_msgs
+[0.094s] -- The C compiler identification is GNU 11.4.0
+[0.156s] -- The CXX compiler identification is GNU 11.4.0
+[0.164s] -- Detecting C compiler ABI info
+[0.223s] -- Detecting C compiler ABI info - done
+[0.227s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.227s] -- Detecting C compile features
+[0.228s] -- Detecting C compile features - done
+[0.230s] -- Detecting CXX compiler ABI info
+[0.294s] -- Detecting CXX compiler ABI info - done
+[0.298s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.298s] -- Detecting CXX compile features
+[0.298s] -- Detecting CXX compile features - done
+[0.302s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.408s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.482s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.486s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.493s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.526s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.556s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.735s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[0.868s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.029s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.048s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.050s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.070s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.070s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.070s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.070s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.087s] -- Found PythonExtra: .so  
+[1.113s] -- Added test 'lint_cmake' to check CMake code style
+[1.114s] -- Added test 'xmllint' to check XML markup files
+[1.118s] -- Configuring done
+[1.138s] -- Generating done
+[1.144s] -- Build files have been written to: /home/pc/intelrb_ws/build/kinova_msgs
+[1.154s] Invoked command in '/home/pc/intelrb_ws/build/kinova_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/pc/robot_ws/install/kinova_control:/home/pc/cont_ws/install/torque_test_pkg:/home/pc/cont_ws/install/pid_pkg:/home/pc/cont_ws/install/finger_pkg:/home/pc/cont_ws/install/control_continuum:/opt/ros/humble /usr/bin/cmake /home/pc/intelrb_ws/src/kinova_msgs -DCMAKE_INSTALL_PREFIX=/home/pc/intelrb_ws/install/kinova_msgs
+[1.156s] Invoking command in '/home/pc/intelrb_ws/build/kinova_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/pc/robot_ws/install/kinova_control:/home/pc/cont_ws/install/torque_test_pkg:/home/pc/cont_ws/install/pid_pkg:/home/pc/cont_ws/install/finger_pkg:/home/pc/cont_ws/install/control_continuum:/opt/ros/humble /usr/bin/cmake --build /home/pc/intelrb_ws/build/kinova_msgs -- -j16 -l16
+[1.188s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.195s] [  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[1.202s] [  5%] Built target ament_cmake_python_copy_kinova_msgs
+[1.350s] running egg_info
+[1.351s] creating kinova_msgs.egg-info
+[1.351s] writing kinova_msgs.egg-info/PKG-INFO
+[1.351s] writing dependency_links to kinova_msgs.egg-info/dependency_links.txt
+[1.351s] writing top-level names to kinova_msgs.egg-info/top_level.txt
+[1.351s] writing manifest file 'kinova_msgs.egg-info/SOURCES.txt'
+[1.353s] reading manifest file 'kinova_msgs.egg-info/SOURCES.txt'
+[1.354s] writing manifest file 'kinova_msgs.egg-info/SOURCES.txt'
+[1.381s] [  5%] Built target ament_cmake_python_build_kinova_msgs_egg
+[1.382s] [  5%] Built target kinova_msgs__cpp
+[1.389s] [ 10%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[1.389s] [ 10%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_generator_c.dir/rosidl_generator_c/kinova_msgs/msg/detail/kinova_command__functions.c.o[0m
+[1.389s] [ 15%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[1.389s] [ 15%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[1.389s] [ 17%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_generator_c.dir/rosidl_generator_c/kinova_msgs/srv/detail/kinova_executor__functions.c.o[0m
+[1.438s] [ 20%] [32m[1mLinking C shared library libkinova_msgs__rosidl_generator_c.so[0m
+[1.467s] [ 20%] Built target kinova_msgs__rosidl_generator_c
+[1.475s] [ 28%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[1.475s] [ 28%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[1.475s] [ 28%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[1.541s] [ 30%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/kinova_msgs/srv/kinova_executor__type_support.cpp.o[0m
+[1.541s] [ 33%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/kinova_msgs/msg/kinova_command__type_support.cpp.o[0m
+[1.555s] [ 38%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/kinova_msgs/srv/detail/kinova_executor__type_support.cpp.o[0m
+[1.555s] [ 38%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/kinova_msgs/msg/detail/kinova_command__type_support.cpp.o[0m
+[1.569s] [ 43%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/kinova_msgs/srv/detail/dds_fastrtps/kinova_executor__type_support.cpp.o[0m
+[1.569s] [ 43%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/kinova_msgs/msg/detail/dds_fastrtps/kinova_command__type_support.cpp.o[0m
+[1.635s] [ 48%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/kinova_msgs/msg/kinova_command__type_support.cpp.o[0m
+[1.635s] [ 48%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/kinova_msgs/srv/kinova_executor__type_support.cpp.o[0m
+[1.663s] [ 53%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/kinova_msgs/msg/detail/kinova_command__type_support_c.cpp.o[0m
+[1.664s] [ 53%] [32m[1mLinking CXX shared library libkinova_msgs__rosidl_typesupport_c.so[0m
+[1.664s] [ 58%] [32mBuilding CXX object CMakeFiles/kinova_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/kinova_msgs/srv/detail/kinova_executor__type_support_c.cpp.o[0m
+[1.664s] [ 58%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/kinova_msgs/srv/detail/kinova_executor__type_support.c.o[0m
+[1.665s] [ 61%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/kinova_msgs/msg/detail/kinova_command__type_support.c.o[0m
+[1.695s] [ 64%] [32m[1mLinking C shared library libkinova_msgs__rosidl_typesupport_introspection_c.so[0m
+[1.701s] [ 64%] Built target kinova_msgs__rosidl_typesupport_c
+[1.720s] [ 64%] Built target kinova_msgs__rosidl_typesupport_introspection_c
+[1.722s] [ 66%] [32m[1mLinking CXX shared library libkinova_msgs__rosidl_typesupport_cpp.so[0m
+[1.755s] [ 66%] Built target kinova_msgs__rosidl_typesupport_cpp
+[1.815s] [ 69%] [32m[1mLinking CXX shared library libkinova_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[1.854s] [ 71%] [32m[1mLinking CXX shared library libkinova_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[1.869s] [ 71%] Built target kinova_msgs__rosidl_typesupport_introspection_cpp
+[1.885s] [ 74%] [32m[1mLinking CXX shared library libkinova_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[1.904s] [ 74%] Built target kinova_msgs__rosidl_typesupport_fastrtps_cpp
+[1.933s] [ 74%] Built target kinova_msgs__rosidl_typesupport_fastrtps_c
+[1.948s] [ 74%] Built target kinova_msgs
+[1.964s] [ 76%] [34m[1mGenerating Python code for ROS interfaces[0m
+[2.195s] [ 76%] Built target kinova_msgs__py
+[2.211s] [ 82%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_generator_py.dir/rosidl_generator_py/kinova_msgs/msg/_kinova_command_s.c.o[0m
+[2.211s] [ 82%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_generator_py.dir/rosidl_generator_py/kinova_msgs/srv/_kinova_executor_s.c.o[0m
+[2.298s] [ 84%] [32m[1mLinking C shared library rosidl_generator_py/kinova_msgs/libkinova_msgs__rosidl_generator_py.so[0m
+[2.333s] [ 84%] Built target kinova_msgs__rosidl_generator_py
+[2.348s] [ 87%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/kinova_msgs/_kinova_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[2.348s] [ 89%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/kinova_msgs/_kinova_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[2.348s] [ 92%] [32mBuilding C object CMakeFiles/kinova_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/kinova_msgs/_kinova_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[2.405s] [ 94%] [32m[1mLinking C shared library rosidl_generator_py/kinova_msgs/kinova_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[2.405s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/kinova_msgs/kinova_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[2.408s] [100%] [32m[1mLinking C shared library rosidl_generator_py/kinova_msgs/kinova_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[2.426s] [100%] Built target kinova_msgs__rosidl_typesupport_c__pyext
+[2.428s] [100%] Built target kinova_msgs__rosidl_typesupport_introspection_c__pyext
+[2.436s] [100%] Built target kinova_msgs__rosidl_typesupport_fastrtps_c__pyext
+[2.444s] Invoked command in '/home/pc/intelrb_ws/build/kinova_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/pc/robot_ws/install/kinova_control:/home/pc/cont_ws/install/torque_test_pkg:/home/pc/cont_ws/install/pid_pkg:/home/pc/cont_ws/install/finger_pkg:/home/pc/cont_ws/install/control_continuum:/opt/ros/humble /usr/bin/cmake --build /home/pc/intelrb_ws/build/kinova_msgs -- -j16 -l16
+[2.452s] Invoking command in '/home/pc/intelrb_ws/build/kinova_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/pc/robot_ws/install/kinova_control:/home/pc/cont_ws/install/torque_test_pkg:/home/pc/cont_ws/install/pid_pkg:/home/pc/cont_ws/install/finger_pkg:/home/pc/cont_ws/install/control_continuum:/opt/ros/humble /usr/bin/cmake --install /home/pc/intelrb_ws/build/kinova_msgs
+[2.458s] -- Install configuration: ""
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/ament_index/resource_index/rosidl_interfaces/kinova_msgs
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/rosidl_generator_c__visibility_control.h
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__type_support.h
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__functions.h
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__struct.h
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__functions.c
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/kinova_command.h
+[2.458s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__type_support.h
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__struct.h
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__functions.h
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__functions.c
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/kinova_executor.h
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/library_path.sh
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/library_path.dsv
+[2.459s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_generator_c.so
+[2.459s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_generator_c.so" to ""
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__rosidl_typesupport_fastrtps_c.h
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__rosidl_typesupport_fastrtps_c.h
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_fastrtps_c.so
+[2.460s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__rosidl_typesupport_introspection_c.h
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__type_support.c
+[2.460s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv
+[2.460s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__rosidl_typesupport_introspection_c.h
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__type_support.c
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_introspection_c.so
+[2.461s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_introspection_c.so" to ""
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_c.so
+[2.461s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_c.so" to ""
+[2.461s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs
+[2.461s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg
+[2.461s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__builder.hpp
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__type_support.hpp
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__struct.hpp
+[2.461s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__traits.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/kinova_command.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__builder.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__traits.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__struct.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__type_support.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/kinova_executor.hpp
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__rosidl_typesupport_fastrtps_cpp.hpp
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/dds_fastrtps
+[2.462s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv
+[2.462s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/dds_fastrtps
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__rosidl_typesupport_fastrtps_cpp.hpp
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_fastrtps_cpp.so
+[2.463s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[2.463s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs
+[2.463s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg
+[2.463s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__rosidl_typesupport_introspection_cpp.hpp
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/msg/detail/kinova_command__type_support.cpp
+[2.463s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv
+[2.463s] -- Up-to-date: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__rosidl_typesupport_introspection_cpp.hpp
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/include/kinova_msgs/kinova_msgs/srv/detail/kinova_executor__type_support.cpp
+[2.463s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_introspection_cpp.so
+[2.464s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_cpp.so
+[2.464s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_typesupport_cpp.so" to ""
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/pythonpath.sh
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/pythonpath.dsv
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs-0.0.0-py3.10.egg-info
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[2.464s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/_kinova_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/_kinova_msgs_s.ep.rosidl_typesupport_c.c
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg/_kinova_command.py
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg/_kinova_command_s.c
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg/__init__.py
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/libkinova_msgs__rosidl_generator_py.so
+[2.465s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv
+[2.466s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv/_kinova_executor.py
+[2.466s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv/_kinova_executor_s.c
+[2.466s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv/__init__.py
+[2.466s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/_kinova_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[2.466s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/__init__.py
+[2.491s] Listing '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs'...
+[2.491s] Compiling '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/__init__.py'...
+[2.491s] Listing '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg'...
+[2.491s] Compiling '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg/__init__.py'...
+[2.491s] Compiling '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/msg/_kinova_command.py'...
+[2.491s] Listing '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv'...
+[2.491s] Compiling '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv/__init__.py'...
+[2.491s] Compiling '/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/srv/_kinova_executor.py'...
+[2.494s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[2.494s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[2.494s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[2.494s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[2.494s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[2.495s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages/kinova_msgs/kinova_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_generator_py.so
+[2.495s] -- Set runtime path of "/home/pc/intelrb_ws/install/kinova_msgs/lib/libkinova_msgs__rosidl_generator_py.so" to ""
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/msg/KinovaCommand.idl
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/srv/KinovaExecutor.idl
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/msg/KinovaCommand.msg
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/srv/KinovaExecutor.srv
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/srv/KinovaExecutor_Request.msg
+[2.495s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/srv/KinovaExecutor_Response.msg
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/ament_index/resource_index/package_run_dependencies/kinova_msgs
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/ament_index/resource_index/parent_prefix_path/kinova_msgs
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/ament_prefix_path.sh
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/ament_prefix_path.dsv
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/path.sh
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/environment/path.dsv
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/local_setup.bash
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/local_setup.sh
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/local_setup.zsh
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/local_setup.dsv
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/package.dsv
+[2.496s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/ament_index/resource_index/packages/kinova_msgs
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_generator_cExport.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_generator_cExport-noconfig.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_introspection_cExport.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_cExport.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_generator_cppExport.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[2.497s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_cppExport.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_generator_pyExport.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/export_kinova_msgs__rosidl_generator_pyExport-noconfig.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/rosidl_cmake-extras.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[2.498s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[2.499s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[2.499s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgsConfig.cmake
+[2.499s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/cmake/kinova_msgsConfig-version.cmake
+[2.499s] -- Installing: /home/pc/intelrb_ws/install/kinova_msgs/share/kinova_msgs/package.xml
+[2.501s] Invoked command in '/home/pc/intelrb_ws/build/kinova_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/pc/robot_ws/install/kinova_control:/home/pc/cont_ws/install/torque_test_pkg:/home/pc/cont_ws/install/pid_pkg:/home/pc/cont_ws/install/finger_pkg:/home/pc/cont_ws/install/control_continuum:/opt/ros/humble /usr/bin/cmake --install /home/pc/intelrb_ws/build/kinova_msgs

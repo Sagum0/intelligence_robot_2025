@@ -130,12 +130,23 @@ class KinovaDriverNode(Node):
         except Exception as e:
             self.get_logger().warn(f'Failed to publish joint states: {e}')
 
-    def check_for_end_or_abort(self, e, success_flag):
-        def check(notification, e=e, success_flag=success_flag):
+    def check_for_end_or_abort(self, e, success_flag, expected_handle_id):
+        """
+        Kortex가 하나의 액션에 대해 다수의 이벤트를 뿌리기 때문에
+        현재 실행 중인 액션 핸들(identifier)이 일치하고,
+        그 중에서도 종료 이벤트(ACTION_END / ACTION_ABORT)만을
+        잡아서 서비스 응답을 완료하도록 필터링한다.
+        """
+        def check(notification, e=e, success_flag=success_flag, expected_handle_id=expected_handle_id):
+            # 예상 핸들이 있을 때만 필터링, 없으면 첫 종료 이벤트를 채택
+            if expected_handle_id is not None and notification.handle.identifier != expected_handle_id:
+                return
+
             event_name = Base_pb2.ActionEvent.Name(notification.action_event)
             event_id = notification.action_event
-            self.get_logger().info(f"Event: {event_name} (ID: {event_id})")
+            self.get_logger().info(f"Event: {event_name} (ID: {event_id}, handle: {notification.handle.identifier})")
 
+            # 종료 이벤트만 처리
             if notification.action_event == Base_pb2.ACTION_END:
                 success_flag[0] = True
                 e.set()
@@ -143,10 +154,9 @@ class KinovaDriverNode(Node):
                 success_flag[0] = False
                 e.set()
             else:
-                # 다른 이벤트 타입이 오면 경고
-                self.get_logger().warn(
-                    f"Unhandled event type: {event_name} (ID: {event_id}). "
-                    "Action may hang if this is a terminal event."
+                # 비종료 이벤트는 기록만 남기고 무시
+                self.get_logger().debug(
+                    f"Ignoring non-terminal event: {event_name} (ID: {event_id})"
                 )
         return check
     
@@ -196,13 +206,17 @@ class KinovaDriverNode(Node):
             e = threading.Event()
             success_flag = [False] # 참조로 전달하기 위한 가변 리스트
             
+            self.get_logger().info("Executing action...")
+            action_handle = self.base.ExecuteAction(action)
+            expected_handle_id = getattr(action_handle, "identifier", None)
+
+            if expected_handle_id is None:
+                self.get_logger().warn("ExecuteAction returned no handle; will accept first terminal event")
+
             notification_handle = self.base.OnNotificationActionTopic(
-                self.check_for_end_or_abort(e, success_flag),
+                self.check_for_end_or_abort(e, success_flag, expected_handle_id),
                 Base_pb2.NotificationOptions()
             )
-
-            self.get_logger().info("Executing action...")
-            self.base.ExecuteAction(action)
 
             # 완료 대기
             finished = e.wait(5.0) # 5초 타임아웃

@@ -56,7 +56,7 @@ cdr_deserialize(
   }
 
   return true;
-}  // NOLINT(readability/fn_size)
+}
 
 size_t
 ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_kinova_msgs
@@ -303,7 +303,7 @@ cdr_deserialize(
   cdr >> ros_message.message;
 
   return true;
-}  // NOLINT(readability/fn_size)
+}
 
 size_t
 ROSIDL_TYPESUPPORT_FASTRTPS_CPP_PUBLIC_kinova_msgs

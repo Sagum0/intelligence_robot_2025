@@ -1,0 +1,62 @@
+[0.385s] Invoking command in '/home/pc/intelrb_ws/src/kinova_control': AMENT_PREFIX_PATH=/home/pc/intelrb_ws/install/kinova_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/pc/intelrb_ws/install/kinova_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/pc/intelrb_ws/install/kinova_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/pc/intelrb_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages:/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/kinova_control build --build-base /home/pc/intelrb_ws/build/kinova_control/build install --record /home/pc/intelrb_ws/build/kinova_control/install.log --single-version-externally-managed install_data
+[0.522s] running egg_info
+[0.522s] creating ../../build/kinova_control/kinova_control.egg-info
+[0.522s] writing ../../build/kinova_control/kinova_control.egg-info/PKG-INFO
+[0.522s] writing dependency_links to ../../build/kinova_control/kinova_control.egg-info/dependency_links.txt
+[0.522s] writing entry points to ../../build/kinova_control/kinova_control.egg-info/entry_points.txt
+[0.522s] writing requirements to ../../build/kinova_control/kinova_control.egg-info/requires.txt
+[0.522s] writing top-level names to ../../build/kinova_control/kinova_control.egg-info/top_level.txt
+[0.522s] writing manifest file '../../build/kinova_control/kinova_control.egg-info/SOURCES.txt'
+[0.523s] reading manifest file '../../build/kinova_control/kinova_control.egg-info/SOURCES.txt'
+[0.524s] writing manifest file '../../build/kinova_control/kinova_control.egg-info/SOURCES.txt'
+[0.524s] running build
+[0.524s] running build_py
+[0.524s] creating /home/pc/intelrb_ws/build/kinova_control/build
+[0.524s] creating /home/pc/intelrb_ws/build/kinova_control/build/lib
+[0.524s] creating /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/kinova_client_node.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/kinova_driver_node.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/utilities.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/vision_node.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/module.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/pose_calculator_node.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/vision_node_custom.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/kinova_main_node.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] copying kinova_control/__init__.py -> /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control
+[0.524s] running install
+[0.525s] running install_lib
+[0.525s] creating /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/kinova_client_node.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/kinova_driver_node.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/utilities.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/vision_node.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/module.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/pose_calculator_node.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/vision_node_custom.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/kinova_main_node.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.525s] copying /home/pc/intelrb_ws/build/kinova_control/build/lib/kinova_control/__init__.py -> /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control
+[0.526s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/kinova_client_node.py to kinova_client_node.cpython-310.pyc
+[0.526s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/kinova_driver_node.py to kinova_driver_node.cpython-310.pyc
+[0.528s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/utilities.py to utilities.cpython-310.pyc
+[0.528s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/vision_node.py to vision_node.cpython-310.pyc
+[0.528s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/module.py to module.cpython-310.pyc
+[0.529s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/pose_calculator_node.py to pose_calculator_node.cpython-310.pyc
+[0.529s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/vision_node_custom.py to vision_node_custom.cpython-310.pyc
+[0.530s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/kinova_main_node.py to kinova_main_node.cpython-310.pyc
+[0.531s] byte-compiling /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control/__init__.py to __init__.cpython-310.pyc
+[0.532s] running install_data
+[0.532s] creating /home/pc/intelrb_ws/install/kinova_control/share/ament_index
+[0.532s] creating /home/pc/intelrb_ws/install/kinova_control/share/ament_index/resource_index
+[0.532s] creating /home/pc/intelrb_ws/install/kinova_control/share/ament_index/resource_index/packages
+[0.532s] copying resource/kinova_control -> /home/pc/intelrb_ws/install/kinova_control/share/ament_index/resource_index/packages
+[0.532s] copying package.xml -> /home/pc/intelrb_ws/install/kinova_control/share/kinova_control
+[0.532s] running install_egg_info
+[0.533s] Copying ../../build/kinova_control/kinova_control.egg-info to /home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages/kinova_control-0.0.0-py3.10.egg-info
+[0.533s] running install_scripts
+[0.546s] Installing custom_vision script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.546s] Installing kinova_client_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.546s] Installing kinova_driver_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.546s] Installing kinova_main_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.546s] Installing vision_node script to /home/pc/intelrb_ws/install/kinova_control/lib/kinova_control
+[0.546s] writing list of installed files to '/home/pc/intelrb_ws/build/kinova_control/install.log'
+[0.560s] Invoked command in '/home/pc/intelrb_ws/src/kinova_control' returned '0': AMENT_PREFIX_PATH=/home/pc/intelrb_ws/install/kinova_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/pc/intelrb_ws/install/kinova_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/pc/intelrb_ws/install/kinova_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/pc/intelrb_ws/build/kinova_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/kinova_control/lib/python3.10/site-packages:/home/pc/intelrb_ws/install/kinova_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/kinova_control build --build-base /home/pc/intelrb_ws/build/kinova_control/build install --record /home/pc/intelrb_ws/build/kinova_control/install.log --single-version-externally-managed install_data

@@ -4,7 +4,7 @@ class Midterm_1:
         if step == 'step_1':
             ans = {
                 'frame'    : 'cartesian',
-                'position' : [0.2, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
+                'position' : [0.17, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
                 'requires_ack' : True,
                 'next_step': 'step_2'
             }
@@ -39,7 +39,7 @@ class Midterm_1:
 
         elif step == 'step_5':
             ans = {
-                'gripper' : 0.7,
+                'gripper' : 0.65,
                 'requires_ack' : True,
                 'next_step': 'step_6'
             }
@@ -74,7 +74,7 @@ class Midterm_1:
 
         elif step == 'step_9':
             ans = {
-                'gripper' : 0.05,
+                'gripper' : 0.3,
                 'requires_ack' : True,
                 'next_step': 'step_10'
             }
@@ -83,7 +83,7 @@ class Midterm_1:
         elif step == 'step_10':
             ans = {
                 'frame'    : 'cartesian',
-                'position' : [0.2, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
+                'position' : [0.17, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
                 'requires_ack' : True,
                 'next_step': 'None'
             }
@@ -98,7 +98,7 @@ class Midterm_2:
         if step == 'step_1':
             ans = {
                 'frame'    : 'cartesian',
-                'position' : [0.2, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
+                'position' : [0.17, 0.0, 0.35, 179.0, 0.0, 90.0], # 이동 1
                 'requires_ack' : True,
                 'next_step': 'step_2'
             }
@@ -133,7 +133,7 @@ class Midterm_2:
 
         elif step == 'step_5':
             ans = {
-                'gripper' : 0.7,
+                'gripper' : 0.65,
                 'requires_ack' : True,
                 'next_step': 'step_6'
             }
@@ -168,7 +168,7 @@ class Midterm_2:
 
         elif step == 'step_9':
             ans = {
-                'gripper' : 0.05,
+                'gripper' : 0.3,
                 'requires_ack' : True,
                 'next_step': 'step_10'
             }
@@ -203,7 +203,7 @@ class Midterm_2:
 
         elif step == 'step_13':
             ans = {
-                'gripper' : 0.7,
+                'gripper' : 0.65,
                 'requires_ack' : True,
                 'next_step': 'step_14'
             }
@@ -238,7 +238,7 @@ class Midterm_2:
 
         elif step == 'step_17':
             ans = {
-                'gripper' : 0.0,
+                'gripper' : 0.3,
                 'requires_ack' : True,
                 'next_step': 'step_18'
             }
@@ -247,7 +247,7 @@ class Midterm_2:
         elif step == 'step_18':
             ans = {
                 'frame'    : 'cartesian',
-                'position' : [0.2, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
+                'position' : [0.17, 0.0, 0.3, 179.0, 0.0, 90.0], # 이동 1
                 'requires_ack' : True,
                 'next_step': 'None'
             }

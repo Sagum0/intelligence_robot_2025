@@ -4,5 +4,3 @@ kinova_msgs.egg-info/PKG-INFO
 kinova_msgs.egg-info/SOURCES.txt
 kinova_msgs.egg-info/dependency_links.txt
 kinova_msgs.egg-info/top_level.txt
-kinova_msgs/msg/__init__.py
-kinova_msgs/msg/_kinova_command.py
