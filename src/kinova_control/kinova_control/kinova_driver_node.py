@@ -197,6 +197,12 @@ class KinovaDriverNode(Node):
             cartesian_pose.theta_y = coordinate[4]
             cartesian_pose.theta_z = coordinate[5]
 
+            # [Hardcoded Smoothness] Set speed limits to avoid jerky stops
+            # These values (0.2 m/s, 30 deg/s) are conservative defaults for smooth picking.
+            # If still jerky, try lowering translation to 0.1
+            action.reach_pose.constraints.speed.translation = 0.2
+            action.reach_pose.constraints.speed.orientation = 30.0
+
         else:
             self.get_logger().error(f"Unknown frame: {frame}")
             return False

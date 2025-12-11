@@ -1,0 +1,6 @@
+[console_scripts]
+client = final_kinova.kinova_client_node:main
+driver = final_kinova.kinova_driver_node:main
+main = final_kinova.kinova_main_node:main
+vision = final_kinova.vision_node:main
+

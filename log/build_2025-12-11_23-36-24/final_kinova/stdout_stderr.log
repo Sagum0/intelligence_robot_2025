@@ -1,0 +1,18 @@
+running develop
+running egg_info
+writing final_kinova.egg-info/PKG-INFO
+writing dependency_links to final_kinova.egg-info/dependency_links.txt
+writing entry points to final_kinova.egg-info/entry_points.txt
+writing requirements to final_kinova.egg-info/requires.txt
+writing top-level names to final_kinova.egg-info/top_level.txt
+reading manifest file 'final_kinova.egg-info/SOURCES.txt'
+writing manifest file 'final_kinova.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/pc/intelrb_ws/install/final_kinova/lib/python3.10/site-packages/final-kinova.egg-link (link to .)
+Installing client script to /home/pc/intelrb_ws/install/final_kinova/lib/final_kinova
+Installing driver script to /home/pc/intelrb_ws/install/final_kinova/lib/final_kinova
+Installing main script to /home/pc/intelrb_ws/install/final_kinova/lib/final_kinova
+Installing vision script to /home/pc/intelrb_ws/install/final_kinova/lib/final_kinova
+
+Installed /home/pc/intelrb_ws/build/final_kinova
+running symlink_data

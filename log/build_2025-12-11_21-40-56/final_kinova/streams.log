@@ -1,0 +1,24 @@
+[0.428s] Invoking command in '/home/pc/intelrb_ws/build/final_kinova': PYTHONPATH=/home/pc/intelrb_ws/build/final_kinova/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/final_kinova/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pc/intelrb_ws/build/final_kinova/build --no-deps symlink_data
+[0.599s] running develop
+[0.691s] running egg_info
+[0.691s] creating final_kinova.egg-info
+[0.692s] writing final_kinova.egg-info/PKG-INFO
+[0.692s] writing dependency_links to final_kinova.egg-info/dependency_links.txt
+[0.692s] writing entry points to final_kinova.egg-info/entry_points.txt
+[0.692s] writing requirements to final_kinova.egg-info/requires.txt
+[0.692s] writing top-level names to final_kinova.egg-info/top_level.txt
+[0.692s] writing manifest file 'final_kinova.egg-info/SOURCES.txt'
+[0.692s] reading manifest file 'final_kinova.egg-info/SOURCES.txt'
+[0.693s] writing manifest file 'final_kinova.egg-info/SOURCES.txt'
+[0.694s] running build_ext
+[0.694s] Creating /home/pc/intelrb_ws/install/final_kinova/lib/python3.10/site-packages/final-kinova.egg-link (link to .)
+[0.694s] Installing vision script to /home/pc/intelrb_ws/install/final_kinova/lib/final_kinova
+[0.694s] 
+[0.694s] Installed /home/pc/intelrb_ws/build/final_kinova
+[0.694s] running symlink_data
+[0.694s] creating /home/pc/intelrb_ws/install/final_kinova/share/ament_index
+[0.694s] creating /home/pc/intelrb_ws/install/final_kinova/share/ament_index/resource_index
+[0.694s] creating /home/pc/intelrb_ws/install/final_kinova/share/ament_index/resource_index/packages
+[0.694s] symbolically linking /home/pc/intelrb_ws/build/final_kinova/resource/final_kinova -> /home/pc/intelrb_ws/install/final_kinova/share/ament_index/resource_index/packages
+[0.694s] symbolically linking /home/pc/intelrb_ws/build/final_kinova/package.xml -> /home/pc/intelrb_ws/install/final_kinova/share/final_kinova
+[0.709s] Invoked command in '/home/pc/intelrb_ws/build/final_kinova' returned '0': PYTHONPATH=/home/pc/intelrb_ws/build/final_kinova/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/pc/intelrb_ws/install/final_kinova/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/pc/intelrb_ws/build/final_kinova/build --no-deps symlink_data
