@@ -277,6 +277,19 @@ class KinovaMainNode(Node):
             self.cmd_pub.publish(cmd_msg)
             
             self.get_logger().info(f"[MAIN] Moving Above Object: {cmd_msg.coordinate}")
+            
+        if ans.get('obj_move_up') is not None:
+            with self.lock:
+                obj_pose = self.detected_obj_pose
+                
+            x, y = float(obj_pose[0]), float(obj_pose[1])
+            cmd_msg = KinovaCommand()
+            cmd_msg.frame = 'cartesian'
+            cmd_msg.coordinate = [x, y, 0.15, 179.0, 0.0, 90.0]
+            self.cmd_pub.publish(cmd_msg)
+            
+            self.get_logger().info(f"[MAIN] Moving Above Object: {cmd_msg.coordinate}")
+                
         ### block block block block block block block block block 
         
         ### maker maker maker maker maker maker maker maker maker

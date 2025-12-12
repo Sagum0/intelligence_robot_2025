@@ -79,7 +79,7 @@ class VisionNode(Node):
         
         # Delay related
         self.start_delay_time = None
-        self.delay_duration = 2.0 # seconds
+        self.delay_duration = 1.0 # seconds
 
         self.depth_scale = self.profile.get_device().first_depth_sensor().get_depth_scale()
         self.intrinsics = self.profile.get_stream(rs.stream.color).as_video_stream_profile().get_intrinsics()
@@ -488,7 +488,7 @@ class VisionNode(Node):
                                     # [Refinement] Apply Offset relative to Marker Frame
                                     # User requested -45mm in Y-axis direction from the marker
                                     T_marker_offset = np.eye(4)
-                                    T_marker_offset[1, 3] = -0.046 # -45mm Y offset
+                                    T_marker_offset[1, 3] = -0.045 # -45mm Y offset
 
                                     # New Camera Frame Pose (Target Point)
                                     T_camera_target = T_camera_marker @ T_marker_offset

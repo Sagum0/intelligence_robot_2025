@@ -48,6 +48,14 @@ class Final:
             ans = {
                 'gripper'    : 0.65,
                 'requires_ack' : True,
+                'next_step': 'step_7-1'
+            }
+            return ans
+        
+        elif step == 'step_7-1':
+            ans = {
+                'obj_move_up'    : True,
+                'requires_ack' : True,
                 'next_step': 'step_7'
             }
             return ans
@@ -114,7 +122,7 @@ class Final:
         # 놓기
         elif step == 'step_13':
             ans = {
-                'gripper'    : 0.25,
+                'gripper'    : 0.3,
                 'requires_ack' : True,
                 'next_step': 'step_14'
             }
@@ -179,6 +187,14 @@ class Final:
         elif step == 'step_20':
             ans = {
                 'gripper'    : 0.65,
+                'requires_ack' : True,
+                'next_step': 'step_21-1'
+            }
+            return ans
+        
+        elif step == 'step_21-1':
+            ans = {
+                'obj_move_up'    : True,
                 'requires_ack' : True,
                 'next_step': 'step_21'
             }
@@ -254,7 +270,7 @@ class Final:
         # 놓기
         elif step == 'step_28':
             ans = {
-                'gripper'    : 0.25,
+                'gripper'    : 0.3,
                 'requires_ack' : True,
                 'next_step': 'step_29'
             }
