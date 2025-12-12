@@ -79,7 +79,7 @@ class KinovaMainNode(Node):
     def maker_callback(self, msg):
         with self.lock:
             data = np.array(msg.data)
-            if len(data) != 3:
+            if len(data) != 4:
                 self.get_logger().warn(f"Received data size {len(data)}, expected 3 (Base Frame XYZ)")
                 return
 
@@ -124,6 +124,16 @@ class KinovaMainNode(Node):
             
             if command == 'FINAL':
                 self.handler = Final()
+                self.current_step = 'step_1'
+                self.current_flag = 'order'
+                
+            elif command == 'HEX':
+                self.handler = Final_Hex()
+                self.current_step = 'step_1'
+                self.current_flag = 'order'
+                
+            elif command == 'SQU':
+                self.handler = Final_Squ()
                 self.current_step = 'step_1'
                 self.current_flag = 'order'
                 
@@ -260,7 +270,7 @@ class KinovaMainNode(Node):
             x, y = float(obj_pose[0]), float(obj_pose[1])
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [x-0.066557, y, 0.19, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [x-0.04, y, 0.18, 179.0, 0.0, 90.0]
             self.cmd_pub.publish(cmd_msg)
             
             self.get_logger().info(f"[MAIN] Moving Above Object: {cmd_msg.coordinate}")
@@ -271,6 +281,8 @@ class KinovaMainNode(Node):
                 obj_pose = self.detected_obj_pose
                 
             x, y, yaw = float(obj_pose[0]), float(obj_pose[1]), float(obj_pose[3])
+            if ans.get('im_hex') and yaw < 0:
+                yaw = yaw + 60.0
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
             cmd_msg.coordinate = [x, y, 0.028, 179.0, 0.0, 90.0 + yaw]
@@ -300,7 +312,7 @@ class KinovaMainNode(Node):
             x, y = float(maker_pose[0]), float(maker_pose[1])
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [x-0.066557-0.045, y, 0.15, 179.0, 0.0, 90.0]
+            cmd_msg.coordinate = [x-0.04-0.045, y, 0.14, 179.0, 0.0, 90.0]
             
             self.cmd_pub.publish(cmd_msg)
             
@@ -310,13 +322,13 @@ class KinovaMainNode(Node):
             with self.lock:
                 maker_pose = self.detected_maker_pose
                 
-            x, y= float(maker_pose[0]), float(maker_pose[1])
+            x, y, yaw = float(maker_pose[0]), float(maker_pose[1]), float(maker_pose[3])
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
             if ans['hex_offset']:
-                cmd_msg.coordinate = [x, y, 0.15, 179.0, 0.0, 90.0]
+                cmd_msg.coordinate = [x, y, 0.14, 179.0, 0.0, 90.0 + yaw]
             else:
-                cmd_msg.coordinate = [x, y, 0.15, 179.0, 0.0, 90.0]
+                cmd_msg.coordinate = [x, y, 0.14, 179.0, 0.0, 90.0 + yaw]
             self.cmd_pub.publish(cmd_msg)
             
             self.get_logger().info(f"[MAIN] Moving Above Maker: {cmd_msg.coordinate}")
@@ -325,13 +337,13 @@ class KinovaMainNode(Node):
             with self.lock:
                 maker_pose = self.detected_maker_pose
                 
-            x, y= float(maker_pose[0]), float(maker_pose[1])
+            x, y, yaw = float(maker_pose[0]), float(maker_pose[1]), float(maker_pose[3])
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
             if ans['hex_offset']:
-                cmd_msg.coordinate = [x, y, 0.087, 179.0, 0.0, 120.0]
+                cmd_msg.coordinate = [x, y, 0.083, 179.0, 0.0, 120.0 + yaw]
             else:
-                cmd_msg.coordinate = [x, y, 0.087, 179.0, 0.0, 90.0]
+                cmd_msg.coordinate = [x, y, 0.087, 179.0, 0.0, 90.0 + yaw]
             self.cmd_pub.publish(cmd_msg)
             
             self.get_logger().info(f"[MAIN] Moving Above Maker: {cmd_msg.coordinate}")
@@ -340,10 +352,10 @@ class KinovaMainNode(Node):
             with self.lock:
                 maker_pose = self.detected_maker_pose
                 
-            x, y= float(maker_pose[0]), float(maker_pose[1])
+            x, y, yaw = float(maker_pose[0]), float(maker_pose[1]), float(maker_pose[3])
             cmd_msg = KinovaCommand()
             cmd_msg.frame = 'cartesian'
-            cmd_msg.coordinate = [x, y, 0.15, 179.0, 0.0, 120.0]
+            cmd_msg.coordinate = [x, y, 0.14, 179.0, 0.0, 120.0 + yaw]
 
             self.cmd_pub.publish(cmd_msg)
             

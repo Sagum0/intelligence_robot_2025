@@ -138,6 +138,7 @@ class VisionNode(Node):
         self.detection_count = 0
         self.aruco_positions = []
         self.aruco_rvecs = []
+        self.aruco_yaws = [] # Store yaws
         self.start_delay_time = time.time()
         self.get_logger().info(f"ArUco Trigger received. Waiting {self.delay_duration}s for robot stop...")
 
@@ -391,10 +392,10 @@ class VisionNode(Node):
                                         self.yaws.append(yaw)
                                         self.detection_count += 1
                                         target_found = True
-                                        self.get_logger().info(f"Detect {class_name} {self.detection_count}/10: xyz=({pos3d[0]:.3f}, {pos3d[1]:.3f}, {pos3d[2]:.3f}), yaw={yaw:.2f}")
+                                        self.get_logger().info(f"Detect {class_name} {self.detection_count}/20: xyz=({pos3d[0]:.3f}, {pos3d[1]:.3f}, {pos3d[2]:.3f}), yaw={yaw:.2f}")
                                     
                                     # Enough data, publish & reset
-                                    if self.detection_count >= 10:
+                                    if self.detection_count >= 20:
                                         if T_base_camera is None:
                                             self.get_logger().warn("Waiting for joints to compute FK...")
                                             self.detection_count = 0 
@@ -464,6 +465,26 @@ class VisionNode(Node):
                                 # Store raw rvec/tvec for median
                                 self.aruco_positions.append(np.array([tvec[0], tvec[1], tvec[2]]))
                                 self.aruco_rvecs.append(np.array([rvec[0], rvec[1], rvec[2]]))
+
+                                # --- Yaw Calculation (2D Projection) ---
+                                # Project Origin and Y-axis point (0, 0.1, 0)
+                                axis_pts = np.float32([[0, 0, 0], [0, 0.1, 0]])
+                                imgpts, _ = cv2.projectPoints(axis_pts, np.array([rvec]), np.array([tvec]), self.camera_matrix, self.dist_coeffs)
+                                p_origin = imgpts[0][0]
+                                p_yaxis = imgpts[1][0]
+                                
+                                # Calculate angle relative to Camera Y-axis (Vertical Down)
+                                # Camera Y is (0, 1) vector.
+                                # Marker Y vector on image is (dx, dy)
+                                dx = p_yaxis[0] - p_origin[0]
+                                dy = p_yaxis[1] - p_origin[1]
+                                
+                                # atan2(x, y) gives angle from Y-axis (0, 1)
+                                # If aligned with Y-axis (dy>0, dx=0), atan2(0, 1) = 0
+                                # If 90 deg right (dx>0, dy=0), atan2(1, 0) = 90
+                                yaw_deg = np.degrees(math.atan2(dx, dy))
+                                self.aruco_yaws.append(yaw_deg)
+                                # ---------------------------------------
                                 
                                 self.detection_count += 1
                                 self.get_logger().info(f"ArUco {marker_id} detected {self.detection_count}/10")
@@ -474,13 +495,16 @@ class VisionNode(Node):
                                         self.detection_count = 0 
                                         self.aruco_positions = []
                                         self.aruco_rvecs = []
+                                        self.aruco_yaws = []
                                         continue
 
                                     tvecs_np = np.array(self.aruco_positions)
                                     rvecs_np = np.array(self.aruco_rvecs)
+                                    yaws_np = np.array(self.aruco_yaws)
                                     
                                     median_tvec = np.median(tvecs_np, axis=0)
                                     median_rvec = np.median(rvecs_np, axis=0)
+                                    median_yaw = np.median(yaws_np)
                                     
                                     # 1. Camera Frame Pose Matrix
                                     T_camera_marker = self.get_pose_matrix_from_rvec_tvec(median_rvec, median_tvec)
@@ -498,7 +522,7 @@ class VisionNode(Node):
                                     
                                     # 3. Extract [x, y, z] only
                                     base_pos = T_base_marker[0:3, 3]
-                                    final_data = [base_pos[0], base_pos[1], base_pos[2]]
+                                    final_data = [base_pos[0], base_pos[1], base_pos[2], median_yaw]
                                     
                                     msg = Float32MultiArray()
                                     msg.data = final_data
@@ -512,6 +536,7 @@ class VisionNode(Node):
                                     self.detection_count = 0
                                     self.aruco_positions = []
                                     self.aruco_rvecs = []
+                                    self.aruco_yaws = []
                                     self.get_logger().info("ArUco detection finished. Back to idle mode.")
                                 break # Found target, stop checking other markers in this frame
                 # imshow는 항상!

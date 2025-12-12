@@ -122,7 +122,7 @@ class Final:
         # 놓기
         elif step == 'step_13':
             ans = {
-                'gripper'    : 0.3,
+                'gripper'    : 0.35,
                 'requires_ack' : True,
                 'next_step': 'step_14'
             }
@@ -178,6 +178,7 @@ class Final:
         
         elif step == 'step_19':
             ans = {
+                'im_hex' : True,
                 'obj_move_pick'    : True,
                 'requires_ack' : True,
                 'next_step': 'step_20'
@@ -270,7 +271,7 @@ class Final:
         # 놓기
         elif step == 'step_28':
             ans = {
-                'gripper'    : 0.3,
+                'gripper'    : 0.35,
                 'requires_ack' : True,
                 'next_step': 'step_29'
             }
@@ -289,4 +290,298 @@ class Final:
         
         else:
             return None
-
+        
+        
+class Final_Squ:
+    def step(self, step):
+        # 상부 Detect 위치로 이동 
+        if step == 'step_1':
+            ans = {
+                'frame'    : 'cartesian',
+                'position' : [0.15, 0.0, 0.32, 179.0, 0.0, 90.0],
+                'requires_ack' : True,
+                'next_step': 'step_2'
+            }
+            return ans
+        
+        elif step == 'step_2':
+            ans = {
+                'camera_trigger' : 'obj',
+                'camera_target' : 'squ',
+                'requires_ack' : True,
+                'next_step': 'step_3'
+            }
+            return ans
+        
+        elif step == 'step_3':
+            ans = {
+                'obj_move_top'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_4'
+            }
+            return ans
+        
+        elif step == 'step_4':
+            ans = {
+                'camera_trigger' : 'obj',
+                'camera_target' : 'squ',
+                'requires_ack' : True,
+                'next_step': 'step_5'
+            }
+            return ans
+        
+        elif step == 'step_5':
+            ans = {
+                'obj_move_pick'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_6'
+            }
+            return ans
+        
+        elif step == 'step_6':
+            ans = {
+                'gripper'    : 0.65,
+                'requires_ack' : True,
+                'next_step': 'step_7-1'
+            }
+            return ans
+        
+        elif step == 'step_7-1':
+            ans = {
+                'obj_move_up'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_7'
+            }
+            return ans
+        
+        # 집었으니 Maker 디텍하러 상부 이동
+        elif step == 'step_7':
+            ans = {
+                'frame'    : 'cartesian',
+                'position' : [0.15, 0.0, 0.32, 179.0, 0.0, 90.0],
+                'requires_ack' : True,
+                'next_step': 'step_8'
+            }
+            return ans
+        
+        # 마커 좌표 요청
+        elif step == 'step_8':
+            ans = {
+                'camera_trigger' : 'maker',
+                'camera_target' : 1,
+                'requires_ack' : True,
+                'next_step': 'step_9'
+            }
+            return ans
+        
+        # 마커 상부로 이동
+        elif step == 'step_9':
+            ans = {
+                'maker_move_top'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_10'
+            }
+            return ans
+        
+        # 마커 좌표 다시 요청
+        elif step == 'step_10':
+            ans = {
+                'camera_trigger' : 'maker',
+                'camera_target' : 1,
+                'requires_ack' : True,
+                'next_step': 'step_11'
+            }
+            return ans
+        
+        # 정확한 마커 수직 위치로 이동
+        elif step == 'step_11':
+            ans = {
+                'maker_move_drop_top'    : True,
+                'hex_offset' : False,
+                'requires_ack' : True,
+                'next_step': 'step_12'
+            }
+            return ans
+        
+        # 정확한 마커 위치로 하강
+        elif step == 'step_12':
+            ans = {
+                'maker_move_drop'    : True,
+                'hex_offset' : False,
+                'requires_ack' : True,
+                'next_step': 'step_13'
+            }
+            return ans
+        
+        # 놓기
+        elif step == 'step_13':
+            ans = {
+                'gripper'    : 0.35,
+                'requires_ack' : True,
+                'next_step': 'step_14'
+            }
+            return ans
+        
+        # 다시 상부로 이동
+        elif step == 'step_14':
+            ans = {
+                'frame'    : 'cartesian',
+                'position' : [0.17, 0.0, 0.32, 179.0, 0.0, 90.0],
+                'requires_ack' : True,
+                'next_step': 'None'
+            }
+            return ans
+        
+        
+class Final_Hex:
+    def step(self, step):
+        # 상부 Detect 위치로 이동 
+        if step == 'step_1':
+            ans = {
+                'frame'    : 'cartesian',
+                'position' : [0.15, 0.0, 0.32, 179.0, 0.0, 90.0],
+                'requires_ack' : True,
+                'next_step': 'step_2'
+            }
+            return ans
+        
+        elif step == 'step_2':
+            ans = {
+                'camera_trigger' : 'obj',
+                'camera_target' : 'hex',
+                'requires_ack' : True,
+                'next_step': 'step_3'
+            }
+            return ans
+        
+        elif step == 'step_3':
+            ans = {
+                'obj_move_top'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_4'
+            }
+            return ans
+        
+        elif step == 'step_4':
+            ans = {
+                'camera_trigger' : 'obj',
+                'camera_target' : 'hex',
+                'requires_ack' : True,
+                'next_step': 'step_5'
+            }
+            return ans
+        
+        elif step == 'step_5':
+            ans = {
+                'im_hex' : True,
+                'obj_move_pick'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_6'
+            }
+            return ans
+        
+        elif step == 'step_6':
+            ans = {
+                'gripper'    : 0.65,
+                'requires_ack' : True,
+                'next_step': 'step_7-1'
+            }
+            return ans
+        
+        elif step == 'step_7-1':
+            ans = {
+                'obj_move_up'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_7'
+            }
+            return ans
+        
+        # 집었으니 Maker 디텍하러 상부 이동
+        elif step == 'step_7':
+            ans = {
+                'frame'    : 'cartesian',
+                'position' : [0.15, 0.0, 0.32, 179.0, 0.0, 90.0],
+                'requires_ack' : True,
+                'next_step': 'step_8'
+            }
+            return ans
+        
+        # 마커 좌표 요청
+        elif step == 'step_8':
+            ans = {
+                'camera_trigger' : 'maker',
+                'camera_target' : 0,
+                'requires_ack' : True,
+                'next_step': 'step_9'
+            }
+            return ans
+        
+        # 마커 상부로 이동
+        elif step == 'step_9':
+            ans = {
+                'maker_move_top'    : True,
+                'requires_ack' : True,
+                'next_step': 'step_10'
+            }
+            return ans
+        
+        # 마커 좌표 다시 요청
+        elif step == 'step_10':
+            ans = {
+                'camera_trigger' : 'maker',
+                'camera_target' : 0,
+                'requires_ack' : True,
+                'next_step': 'step_11'
+            }
+            return ans
+        
+        # 정확한 마커 수직 위치로 이동
+        elif step == 'step_11':
+            ans = {
+                'maker_move_drop_top'    : True,
+                'hex_offset' : True,
+                'requires_ack' : True,
+                'next_step': 'step_12'
+            }
+            return ans
+        
+        elif step == 'step_12':
+            ans = {
+                'maker_move_turn' : True,
+                'requires_ack' : True,
+                'next_step': 'step_13'
+            }
+            return ans
+        
+        # 정확한 마커 위치로 하강
+        elif step == 'step_13':
+            ans = {
+                'maker_move_drop'    : True,
+                'hex_offset' : True,
+                'requires_ack' : True,
+                'next_step': 'step_14'
+            }
+            return ans
+        
+        # 놓기
+        elif step == 'step_14':
+            ans = {
+                'gripper'    : 0.35,
+                'requires_ack' : True,
+                'next_step': 'step_15'
+            }
+            return ans
+        
+        # 다시 상부로 이동
+        elif step == 'step_15':
+            ans = {
+                'frame'    : 'cartesian',
+                'position' : [0.17, 0.0, 0.32, 179.0, 0.0, 90.0],
+                'requires_ack' : True,
+                'next_step': 'None'
+            }
+            return ans
+        
+        
+        else:
+            return None
